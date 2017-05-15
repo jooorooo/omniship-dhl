@@ -1,0 +1,25 @@
+{
+    "name": "simexis/omniship-dhl",
+
+    "description": "PHP library to communicate with the DHL XML Services.",
+
+    "require": {
+      "php": "^5.6|^7",
+	  "simexis/dhl": ">=0.0.1"
+    },
+
+    "license": "LGPL-2.1",
+
+    "autoload": {
+      "psr-4": {
+        "Dhl\\": "src"
+      }
+    },
+
+	"authors": [
+        {
+            "name": "Georgi Nachev",
+            "email": "jooorooo@gmail.com"
+        }
+    ]
+}
