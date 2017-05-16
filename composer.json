@@ -5,7 +5,8 @@
 
     "require": {
       "php": "^5.6|^7",
-	  "simexis/dhl": ">=0.0.1"
+	  "simexis/dhl": ">=0.0.1",
+      "simexis/omniship": ">=0.0.1"
     },
 
     "license": "LGPL-2.1",
