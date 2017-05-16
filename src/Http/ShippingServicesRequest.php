@@ -29,7 +29,7 @@ class ShippingServicesRequest extends AbstractRequest
 
         // Set values of the request
         $quote->MessageTime = Carbon::now()->format('Y-m-d\TH:i:sP');
-        $quote->MessageReference = $this->getMessageReference();
+        $quote->MessageReference = md5($this->getTransactionId());
 
         $quote->BkgDetails->Date = $this->getShipmentDate() ? $this->getShipmentDate()->format('Y-m-d') : Carbon::now()->format('Y-m-d');
 

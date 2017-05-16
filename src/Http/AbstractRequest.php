@@ -92,21 +92,6 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $this->getParameter('duty_account_number');
     }
 
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setMessageReference($value) {
-        return $this->setParameter('message_reference', $value);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getMessageReference() {
-        return $this->getParameter('message_reference');
-    }
-
     public function sendData($data) {
         $httpRequest = $this->httpClient->post($this->getEndpoint(), [], $data->toXml());
         if($httpRequest->getStatusCode() != 200) {

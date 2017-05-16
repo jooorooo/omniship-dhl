@@ -129,7 +129,7 @@ class Gateway extends AbstractGateway
      * @return \Omniship\Message\AbstractRequest
      */
     public function getServices(array $parameters = []) {
-        return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters + ['message_reference' => $this->getMessageReference()]);
+        return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters);
     }
 
     /**
@@ -137,29 +137,7 @@ class Gateway extends AbstractGateway
      * @return \Omniship\Message\AbstractRequest
      */
     public function trackingParcel(array $parameters = []) {
-        return $this->createRequest(TrackingParcelRequest::class, $this->getParameters() + $parameters + ['message_reference' => $this->getMessageReference()]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getMessageReference() {
-        if(!is_null($this->message_reference)) {
-            return $this->message_reference;
-        }
-        for($i=0; $i<31; $i++) {
-            $this->message_reference .= mt_rand($i ? 0 : 1, 9);
-        }
-        return $this->message_reference;
-    }
-
-    /**
-     * @param $value
-     * @return $this
-     */
-    public function setMessageReference($value) {
-        $this->message_reference = $value;
-        return $this;
+        return $this->createRequest(TrackingParcelRequest::class, $this->getParameters() + $parameters);
     }
     /**
      * Supports Cash On Delivery

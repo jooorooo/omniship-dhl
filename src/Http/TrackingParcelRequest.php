@@ -24,10 +24,10 @@ class TrackingParcelRequest extends AbstractRequest
 
         // Set values of the request
         $request->MessageTime = Carbon::now()->format('Y-m-d\TH:i:sP');
-        $request->MessageReference = $this->getMessageReference();
+        $request->MessageReference = md5($this->getTransactionId());
 
-        $request->LanguageCode = 'en';
-        $request->CountryCode = 'BG';
+        $request->LanguageCode = $this->getLanguageCode();
+//        $request->CountryCode = 'BG';
         $request->AWBNumber = $this->getParcelId();
         $request->LevelOfDetails = 'ALL_CHECK_POINTS';
         $request->PiecesEnabled = 'S';
