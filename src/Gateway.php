@@ -8,6 +8,7 @@
 
 namespace Omniship\Dhl;
 
+use Omniship\Dhl\Http\CreateBillOfLadingRequest;
 use Omniship\Dhl\Http\ShippingServicesRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
@@ -126,7 +127,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omniship\Message\AbstractRequest
+     * @return \Omniship\Common\ShippingServiceBag
      */
     public function getServices(array $parameters = []) {
         return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters);
@@ -134,10 +135,18 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omniship\Message\AbstractRequest
+     * @return \Omniship\Common\TrackingBag
      */
     public function trackingParcel(array $parameters = []) {
         return $this->createRequest(TrackingParcelRequest::class, $this->getParameters() + $parameters);
+    }
+
+    /**
+     * @param array $parameters
+     * @return \Omniship\Message\AbstractRequest
+     */
+    public function createBillOfLading(array $parameters = []) {
+        return $this->createRequest(CreateBillOfLadingRequest::class, $this->getParameters() + $parameters);
     }
     /**
      * Supports Cash On Delivery

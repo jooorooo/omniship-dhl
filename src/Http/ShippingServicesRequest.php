@@ -12,7 +12,6 @@ use Carbon\Carbon;
 use Dhl\Datatype\AM\PieceType;
 use Dhl\Entity\AM\GetQuote;
 use Omniship\Common\ItemBag;
-use Omniship\Omniship;
 
 class ShippingServicesRequest extends AbstractRequest
 {
@@ -20,9 +19,6 @@ class ShippingServicesRequest extends AbstractRequest
      * @return GetQuote
      */
     public function getData() {
-        /** @var $provider \Omniship\Common\AbstractGateway */
-        $provider = Omniship::create('Dhl');
-
         $quote = new GetQuote();
         $quote->SiteID = $this->getUsername();
         $quote->Password = $this->getPassword();
@@ -59,14 +55,14 @@ class ShippingServicesRequest extends AbstractRequest
 
         $quote->BkgDetails->PaymentCountryCode = $this->getReceiverAddress()->getCountry()->getIso2();
 
-        if($provider->supportsCashOnDelivery()) {
+        if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
 //            $quote->BkgDetails->CODAccountNumber = '100000000001';
-            $quote->BkgDetails->CODAmount = $this->getCashOnDeliveryAmount();
+            $quote->BkgDetails->CODAmount = $cod;
             $quote->BkgDetails->CODCurrencyCode = $this->getCashOnDeliveryCurrency() ?: $this->getCurrency();
         }
 
-        if($provider->supportsInsurance() && $this->getInsuranceAmount() > 0) {
-            $quote->BkgDetails->InsuredValue = $this->getInsuranceAmount();
+        if(($ia = $this->getInsuranceAmount()) > 0) {
+            $quote->BkgDetails->InsuredValue = $ia;
             $quote->BkgDetails->InsuredCurrency = $this->getInsuranceCurrency() ? : $this->getCurrency();
         }
 
@@ -81,8 +77,9 @@ class ShippingServicesRequest extends AbstractRequest
         $quote->To->Postalcode = $this->getReceiverAddress()->getPostCode();
         $quote->To->City = $this->getReceiverAddress()->getCity()->getName();
 
-        if($provider->supportsDeclared()) {
-            $quote->Dutiable->DeclaredValue = $this->getDeclaredAmount();
+        $da = $this->getDeclaredAmount();
+        if($da && $da > 0) {
+            $quote->Dutiable->DeclaredValue = $da;
             $quote->Dutiable->DeclaredCurrency = $this->getDeclaredCurrency() ? : $this->getCurrency();
         }
 
