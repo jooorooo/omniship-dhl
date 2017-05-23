@@ -9,6 +9,7 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
+use Dhl\Entity\AM\TrackingResponse;
 use Omniship\Common\Component;
 use Omniship\Common\EventBag;
 use Omniship\Common\TrackingBag;
@@ -56,9 +57,14 @@ class TrackingParcelResponse extends AbstractResponse
         $result = new EventBag();
         if($xml->ShipmentEvent) {
             foreach($xml->ShipmentEvent AS $event) {
+                $code = (string)$event->ServiceEvent->EventCode;
+                $message = (string)$event->ServiceEvent->Description;
+                if($code == 'OK') {
+                    $message .= ' ' . (string)$xml->ConsigneeName;
+                }
                 $result->add(new Component([
-                    'id' => (string)$event->ServiceEvent->EventCode,
-                    'name' => (string)$event->ServiceEvent->Description,
+                    'id' => $code,
+                    'name' => $message,
                 ]));
             }
         }
