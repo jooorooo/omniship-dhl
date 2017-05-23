@@ -1,0 +1,55 @@
+Dhl\ShipmentCustRatingRequest:
+    xml_root_name: 'ns-476a4b96:ShipmentCustRatingRequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypes\RequestType
+        billing:
+            expose: true
+            access_type: public_method
+            serialized_name: Billing
+            accessor:
+                getter: getBilling
+                setter: setBilling
+            type: Dhl\RatingDataTypes\CustomerRateBillingType
+        shipper:
+            expose: true
+            access_type: public_method
+            serialized_name: Shipper
+            accessor:
+                getter: getShipper
+                setter: setShipper
+            type: Dhl\RatingDataTypes\RatingShipperType
+        consignee:
+            expose: true
+            access_type: public_method
+            serialized_name: Consignee
+            accessor:
+                getter: getConsignee
+                setter: setConsignee
+            type: Dhl\RatingDataTypes\RatingConsigneeType
+        shipmentDetails:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentDetails
+            accessor:
+                getter: getShipmentDetails
+                setter: setShipmentDetails
+            type: Dhl\RatingDataTypes\RatingShipmentDetailsType
+        specialService:
+            expose: true
+            access_type: public_method
+            serialized_name: SpecialService
+            accessor:
+                getter: getSpecialService
+                setter: setSpecialService
+            xml_list:
+                inline: true
+                entry_name: SpecialService
+            type: array<Dhl\RatingDataTypes\RatingSpecialServiceType>

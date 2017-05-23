@@ -1,0 +1,37 @@
+Dhl\DataTypesGlobal\AWBInfoType:
+    properties:
+        aWBNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: AWBNumber
+            accessor:
+                getter: getAWBNumber
+                setter: setAWBNumber
+            type: string
+        status:
+            expose: true
+            access_type: public_method
+            serialized_name: Status
+            accessor:
+                getter: getStatus
+                setter: setStatus
+            type: Dhl\DataTypesGlobal\StatusType
+        shipmentInfo:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentInfo
+            accessor:
+                getter: getShipmentInfo
+                setter: setShipmentInfo
+            type: Dhl\DataTypesGlobal\ShipmentInfoType
+        pieceInfo:
+            expose: true
+            access_type: public_method
+            serialized_name: PieceInfo
+            accessor:
+                getter: getPieceInfo
+                setter: setPieceInfo
+            xml_list:
+                inline: true
+                entry_name: PieceInfo
+            type: array<Dhl\DataTypesGlobal\PieceInfoType>

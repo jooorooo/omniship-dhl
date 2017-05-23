@@ -1,0 +1,283 @@
+Dhl\DCTResponsedatatypes\QtdShpType:
+    properties:
+        globalProductCode:
+            expose: true
+            access_type: public_method
+            serialized_name: GlobalProductCode
+            accessor:
+                getter: getGlobalProductCode
+                setter: setGlobalProductCode
+            type: string
+        localProductCode:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalProductCode
+            accessor:
+                getter: getLocalProductCode
+                setter: setLocalProductCode
+            type: string
+        productShortName:
+            expose: true
+            access_type: public_method
+            serialized_name: ProductShortName
+            accessor:
+                getter: getProductShortName
+                setter: setProductShortName
+            type: string
+        localProductName:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalProductName
+            accessor:
+                getter: getLocalProductName
+                setter: setLocalProductName
+            type: string
+        networkTypeCode:
+            expose: true
+            access_type: public_method
+            serialized_name: NetworkTypeCode
+            accessor:
+                getter: getNetworkTypeCode
+                setter: setNetworkTypeCode
+            type: string
+        pOfferedCustAgreement:
+            expose: true
+            access_type: public_method
+            serialized_name: POfferedCustAgreement
+            accessor:
+                getter: getPOfferedCustAgreement
+                setter: setPOfferedCustAgreement
+            type: string
+        transInd:
+            expose: true
+            access_type: public_method
+            serialized_name: TransInd
+            accessor:
+                getter: getTransInd
+                setter: setTransInd
+            type: string
+        pickupDate:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupDate
+            accessor:
+                getter: getPickupDate
+                setter: setPickupDate
+            type: 'DateTime<''Y-m-d''>'
+        pickupCutoffTime:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupCutoffTime
+            accessor:
+                getter: getPickupCutoffTime
+                setter: setPickupCutoffTime
+            type: DateInterval
+        bookingTime:
+            expose: true
+            access_type: public_method
+            serialized_name: BookingTime
+            accessor:
+                getter: getBookingTime
+                setter: setBookingTime
+            type: DateInterval
+        currencyCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyCode
+            accessor:
+                getter: getCurrencyCode
+                setter: setCurrencyCode
+            type: string
+        exchangeRate:
+            expose: true
+            access_type: public_method
+            serialized_name: ExchangeRate
+            accessor:
+                getter: getExchangeRate
+                setter: setExchangeRate
+            type: float
+        weightCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightCharge
+            accessor:
+                getter: getWeightCharge
+                setter: setWeightCharge
+            type: float
+        weightChargeTax:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightChargeTax
+            accessor:
+                getter: getWeightChargeTax
+                setter: setWeightChargeTax
+            type: float
+        weightChargeTaxRate:
+            expose: true
+            access_type: public_method
+            serialized_name: weightChargeTaxRate
+            accessor:
+                getter: getWeightChargeTaxRate
+                setter: setWeightChargeTaxRate
+            type: float
+        totalTransitDays:
+            expose: true
+            access_type: public_method
+            serialized_name: TotalTransitDays
+            accessor:
+                getter: getTotalTransitDays
+                setter: setTotalTransitDays
+            type: integer
+        pickupPostalLocAddDays:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupPostalLocAddDays
+            accessor:
+                getter: getPickupPostalLocAddDays
+                setter: setPickupPostalLocAddDays
+            type: integer
+        deliveryPostalLocAddDays:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryPostalLocAddDays
+            accessor:
+                getter: getDeliveryPostalLocAddDays
+                setter: setDeliveryPostalLocAddDays
+            type: integer
+        pickupNonDHLCourierCode:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupNonDHLCourierCode
+            accessor:
+                getter: getPickupNonDHLCourierCode
+                setter: setPickupNonDHLCourierCode
+            type: string
+        deliveryNonDHLCourierCode:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryNonDHLCourierCode
+            accessor:
+                getter: getDeliveryNonDHLCourierCode
+                setter: setDeliveryNonDHLCourierCode
+            type: string
+        deliveryCheckpointReturn:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryCheckpointReturn
+            accessor:
+                getter: getDeliveryCheckpointReturn
+                setter: setDeliveryCheckpointReturn
+            type: DateInterval
+        deliveryDate:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryDate
+            accessor:
+                getter: getDeliveryDate
+                setter: setDeliveryDate
+            type: 'DateTime<''Y-m-d''>'
+        deliveryTime:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryTime
+            accessor:
+                getter: getDeliveryTime
+                setter: setDeliveryTime
+            type: DateInterval
+        deliveryTimeGMTOffset:
+            expose: true
+            access_type: public_method
+            serialized_name: DeliveryTimeGMTOffset
+            accessor:
+                getter: getDeliveryTimeGMTOffset
+                setter: setDeliveryTimeGMTOffset
+            type: string
+        dimensionalWeight:
+            expose: true
+            access_type: public_method
+            serialized_name: DimensionalWeight
+            accessor:
+                getter: getDimensionalWeight
+                setter: setDimensionalWeight
+            type: float
+        weightUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightUnit
+            accessor:
+                getter: getWeightUnit
+                setter: setWeightUnit
+            type: string
+        pickupDayOfWeekNum:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupDayOfWeekNum
+            accessor:
+                getter: getPickupDayOfWeekNum
+                setter: setPickupDayOfWeekNum
+            type: string
+        destinationDayOfWeekNum:
+            expose: true
+            access_type: public_method
+            serialized_name: DestinationDayOfWeekNum
+            accessor:
+                getter: getDestinationDayOfWeekNum
+                setter: setDestinationDayOfWeekNum
+            type: string
+        qtdShpExChrg:
+            expose: true
+            access_type: public_method
+            serialized_name: QtdShpExChrg
+            accessor:
+                getter: getQtdShpExChrg
+                setter: setQtdShpExChrg
+            xml_list:
+                inline: true
+                entry_name: QtdShpExChrg
+            type: array<Dhl\DCTResponsedatatypes\QtdShpExChrgType>
+        pricingDate:
+            expose: true
+            access_type: public_method
+            serialized_name: PricingDate
+            accessor:
+                getter: getPricingDate
+                setter: setPricingDate
+            type: 'DateTime<''Y-m-d''>'
+        shippingCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: ShippingCharge
+            accessor:
+                getter: getShippingCharge
+                setter: setShippingCharge
+            type: float
+        totalTaxAmount:
+            expose: true
+            access_type: public_method
+            serialized_name: TotalTaxAmount
+            accessor:
+                getter: getTotalTaxAmount
+                setter: setTotalTaxAmount
+            type: float
+        qtdSInAdCur:
+            expose: true
+            access_type: public_method
+            serialized_name: QtdSInAdCur
+            accessor:
+                getter: getQtdSInAdCur
+                setter: setQtdSInAdCur
+            xml_list:
+                inline: true
+                entry_name: QtdSInAdCur
+            type: array<Dhl\DCTResponsedatatypes\QtdSInAdCurType>
+        weightChargeTaxDet:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightChargeTaxDet
+            accessor:
+                getter: getWeightChargeTaxDet
+                setter: setWeightChargeTaxDet
+            xml_list:
+                inline: true
+                entry_name: WeightChargeTaxDet
+            type: array<Dhl\DCTResponsedatatypes\WeightChargeTaxDetType>

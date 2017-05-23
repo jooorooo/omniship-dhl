@@ -1,0 +1,20 @@
+Dhl\DCTRequest:
+    xml_root_name: 'ns-476a4b96:DCTRequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        getQuote:
+            expose: true
+            access_type: public_method
+            serialized_name: GetQuote
+            accessor:
+                getter: getGetQuote
+                setter: setGetQuote
+            type: Dhl\DCTRequest\GetQuoteAType
+        getCapability:
+            expose: true
+            access_type: public_method
+            serialized_name: GetCapability
+            accessor:
+                getter: getGetCapability
+                setter: setGetCapability
+            type: Dhl\DCTRequest\GetCapabilityAType

@@ -1,0 +1,55 @@
+Dhl\UnknownTrackingRequest:
+    xml_root_name: 'ns-476a4b96:UnknownTrackingRequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypes\RequestType
+        languageCode:
+            expose: true
+            access_type: public_method
+            serialized_name: LanguageCode
+            accessor:
+                getter: getLanguageCode
+                setter: setLanguageCode
+            type: string
+        accountNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: AccountNumber
+            accessor:
+                getter: getAccountNumber
+                setter: setAccountNumber
+            type: integer
+        shipperReference:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipperReference
+            accessor:
+                getter: getShipperReference
+                setter: setShipperReference
+            xml_list:
+                inline: true
+                entry_name: ShipperReference
+            type: array<Dhl\DataTypes\ReferenceType>
+        shipmentDate:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentDate
+            accessor:
+                getter: getShipmentDate
+                setter: setShipmentDate
+            type: Dhl\DataTypes\ShipmentDateType
+        countryCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryCode
+            accessor:
+                getter: getCountryCode
+                setter: setCountryCode
+            type: string

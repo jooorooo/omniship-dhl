@@ -1,0 +1,77 @@
+Dhl\ModifyPURequest:
+    xml_root_name: 'ns-476a4b96:ModifyPURequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        schemaVersion:
+            expose: true
+            access_type: public_method
+            serialized_name: schemaVersion
+            accessor:
+                getter: getSchemaVersion
+                setter: setSchemaVersion
+            xml_attribute: true
+            type: float
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypesGlobal\RequestType
+        regionCode:
+            expose: true
+            access_type: public_method
+            serialized_name: RegionCode
+            accessor:
+                getter: getRegionCode
+                setter: setRegionCode
+            type: string
+        confirmationNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: ConfirmationNumber
+            accessor:
+                getter: getConfirmationNumber
+                setter: setConfirmationNumber
+            type: integer
+        requestor:
+            expose: true
+            access_type: public_method
+            serialized_name: Requestor
+            accessor:
+                getter: getRequestor
+                setter: setRequestor
+            type: Dhl\PickupDataTypesGlobal\RequestorType
+        place:
+            expose: true
+            access_type: public_method
+            serialized_name: Place
+            accessor:
+                getter: getPlace
+                setter: setPlace
+            type: Dhl\PickupDataTypesGlobal\PlaceType
+        pickup:
+            expose: true
+            access_type: public_method
+            serialized_name: Pickup
+            accessor:
+                getter: getPickup
+                setter: setPickup
+            type: Dhl\PickupDataTypesGlobal\PickupType
+        pickupContact:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupContact
+            accessor:
+                getter: getPickupContact
+                setter: setPickupContact
+            type: Dhl\PickupDataTypesGlobal\ContactType
+        originSvcArea:
+            expose: true
+            access_type: public_method
+            serialized_name: OriginSvcArea
+            accessor:
+                getter: getOriginSvcArea
+                setter: setOriginSvcArea
+            type: string

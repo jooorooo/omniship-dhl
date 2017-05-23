@@ -1,0 +1,133 @@
+Dhl\DataTypes\ShipmentType:
+    properties:
+        weight:
+            expose: true
+            access_type: public_method
+            serialized_name: Weight
+            accessor:
+                getter: getWeight
+                setter: setWeight
+            type: float
+        weightUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightUnit
+            accessor:
+                getter: getWeightUnit
+                setter: setWeightUnit
+            type: string
+        pieces:
+            expose: true
+            access_type: public_method
+            serialized_name: Pieces
+            accessor:
+                getter: getPieces
+                setter: setPieces
+            type: array<Dhl\DataTypes\PieceType>
+            xml_list:
+                inline: false
+                entry_name: Piece
+        doorTo:
+            expose: true
+            access_type: public_method
+            serialized_name: DoorTo
+            accessor:
+                getter: getDoorTo
+                setter: setDoorTo
+            type: string
+        airwarBillNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: AirwarBillNumber
+            accessor:
+                getter: getAirwarBillNumber
+                setter: setAirwarBillNumber
+            type: string
+        accountType:
+            expose: true
+            access_type: public_method
+            serialized_name: AccountType
+            accessor:
+                getter: getAccountType
+                setter: setAccountType
+            type: string
+        productType:
+            expose: true
+            access_type: public_method
+            serialized_name: ProductType
+            accessor:
+                getter: getProductType
+                setter: setProductType
+            type: string
+        globalProductType:
+            expose: true
+            access_type: public_method
+            serialized_name: GlobalProductType
+            accessor:
+                getter: getGlobalProductType
+                setter: setGlobalProductType
+            type: string
+        localProductType:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalProductType
+            accessor:
+                getter: getLocalProductType
+                setter: setLocalProductType
+            type: string
+        commodity:
+            expose: true
+            access_type: public_method
+            serialized_name: Commodity
+            accessor:
+                getter: getCommodity
+                setter: setCommodity
+            type: Dhl\DataTypes\CommodityType
+        declaredValue:
+            expose: true
+            access_type: public_method
+            serialized_name: DeclaredValue
+            accessor:
+                getter: getDeclaredValue
+                setter: setDeclaredValue
+            type: float
+        declaredCurrency:
+            expose: true
+            access_type: public_method
+            serialized_name: DeclaredCurrency
+            accessor:
+                getter: getDeclaredCurrency
+                setter: setDeclaredCurrency
+            type: string
+        insuredValue:
+            expose: true
+            access_type: public_method
+            serialized_name: InsuredValue
+            accessor:
+                getter: getInsuredValue
+                setter: setInsuredValue
+            type: float
+        insuredCurrency:
+            expose: true
+            access_type: public_method
+            serialized_name: InsuredCurrency
+            accessor:
+                getter: getInsuredCurrency
+                setter: setInsuredCurrency
+            type: string
+        dimensionalUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: DimensionalUnit
+            accessor:
+                getter: getDimensionalUnit
+                setter: setDimensionalUnit
+            type: string
+        dimensionalWeight:
+            expose: true
+            access_type: public_method
+            serialized_name: DimensionalWeight
+            accessor:
+                getter: getDimensionalWeight
+                setter: setDimensionalWeight
+            type: float

@@ -1,0 +1,93 @@
+Dhl\DataTypesGlobal\ExportDeclarationType:
+    properties:
+        interConsignee:
+            expose: true
+            access_type: public_method
+            serialized_name: InterConsignee
+            accessor:
+                getter: getInterConsignee
+                setter: setInterConsignee
+            type: string
+        isPartiesRelation:
+            expose: true
+            access_type: public_method
+            serialized_name: IsPartiesRelation
+            accessor:
+                getter: getIsPartiesRelation
+                setter: setIsPartiesRelation
+            type: string
+        eCCN:
+            expose: true
+            access_type: public_method
+            serialized_name: ECCN
+            accessor:
+                getter: getECCN
+                setter: setECCN
+            type: string
+        signatureName:
+            expose: true
+            access_type: public_method
+            serialized_name: SignatureName
+            accessor:
+                getter: getSignatureName
+                setter: setSignatureName
+            type: string
+        signatureTitle:
+            expose: true
+            access_type: public_method
+            serialized_name: SignatureTitle
+            accessor:
+                getter: getSignatureTitle
+                setter: setSignatureTitle
+            type: string
+        exportReason:
+            expose: true
+            access_type: public_method
+            serialized_name: ExportReason
+            accessor:
+                getter: getExportReason
+                setter: setExportReason
+            type: string
+        exportReasonCode:
+            expose: true
+            access_type: public_method
+            serialized_name: ExportReasonCode
+            accessor:
+                getter: getExportReasonCode
+                setter: setExportReasonCode
+            type: string
+        sedNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: SedNumber
+            accessor:
+                getter: getSedNumber
+                setter: setSedNumber
+            type: string
+        sedNumberType:
+            expose: true
+            access_type: public_method
+            serialized_name: SedNumberType
+            accessor:
+                getter: getSedNumberType
+                setter: setSedNumberType
+            type: string
+        mxStateCode:
+            expose: true
+            access_type: public_method
+            serialized_name: MxStateCode
+            accessor:
+                getter: getMxStateCode
+                setter: setMxStateCode
+            type: string
+        exportLineItem:
+            expose: true
+            access_type: public_method
+            serialized_name: ExportLineItem
+            accessor:
+                getter: getExportLineItem
+                setter: setExportLineItem
+            xml_list:
+                inline: true
+                entry_name: ExportLineItem
+            type: array<Dhl\DataTypesGlobal\ExportLineItemType>

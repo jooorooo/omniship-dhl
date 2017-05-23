@@ -1,0 +1,50 @@
+Dhl\DataTypesGlobal\SpecialServiceType:
+    properties:
+        specialServiceType:
+            expose: true
+            access_type: public_method
+            serialized_name: SpecialServiceType
+            accessor:
+                getter: getSpecialServiceType
+                setter: setSpecialServiceType
+            type: string
+        communicationAddress:
+            expose: true
+            access_type: public_method
+            serialized_name: CommunicationAddress
+            accessor:
+                getter: getCommunicationAddress
+                setter: setCommunicationAddress
+            type: string
+        communicationType:
+            expose: true
+            access_type: public_method
+            serialized_name: CommunicationType
+            accessor:
+                getter: getCommunicationType
+                setter: setCommunicationType
+            type: string
+        chargeValue:
+            expose: true
+            access_type: public_method
+            serialized_name: ChargeValue
+            accessor:
+                getter: getChargeValue
+                setter: setChargeValue
+            type: float
+        currencyCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyCode
+            accessor:
+                getter: getCurrencyCode
+                setter: setCurrencyCode
+            type: string
+        isWaived:
+            expose: true
+            access_type: public_method
+            serialized_name: IsWaived
+            accessor:
+                getter: getIsWaived
+                setter: setIsWaived
+            type: string

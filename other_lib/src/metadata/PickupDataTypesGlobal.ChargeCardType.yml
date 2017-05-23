@@ -1,0 +1,26 @@
+Dhl\PickupDataTypesGlobal\ChargeCardType:
+    properties:
+        chargeCardNo:
+            expose: true
+            access_type: public_method
+            serialized_name: ChargeCardNo
+            accessor:
+                getter: getChargeCardNo
+                setter: setChargeCardNo
+            type: integer
+        chargeCardType:
+            expose: true
+            access_type: public_method
+            serialized_name: ChargeCardType
+            accessor:
+                getter: getChargeCardType
+                setter: setChargeCardType
+            type: string
+        chargeCardExpiryDate:
+            expose: true
+            access_type: public_method
+            serialized_name: ChargeCardExpiryDate
+            accessor:
+                getter: getChargeCardExpiryDate
+                setter: setChargeCardExpiryDate
+            type: integer

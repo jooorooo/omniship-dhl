@@ -1,0 +1,225 @@
+Dhl\ShipmentRequest:
+    xml_root_name: 'ns-476a4b96:ShipmentRequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        schemaVersion:
+            expose: true
+            access_type: public_method
+            serialized_name: schemaVersion
+            accessor:
+                getter: getSchemaVersion
+                setter: setSchemaVersion
+            xml_attribute: true
+            type: float
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypesGlobal\RequestType
+        regionCode:
+            expose: true
+            access_type: public_method
+            serialized_name: RegionCode
+            accessor:
+                getter: getRegionCode
+                setter: setRegionCode
+            type: string
+        requestedPickupTime:
+            expose: true
+            access_type: public_method
+            serialized_name: RequestedPickupTime
+            accessor:
+                getter: getRequestedPickupTime
+                setter: setRequestedPickupTime
+            type: string
+        newShipper:
+            expose: true
+            access_type: public_method
+            serialized_name: NewShipper
+            accessor:
+                getter: getNewShipper
+                setter: setNewShipper
+            type: string
+        languageCode:
+            expose: true
+            access_type: public_method
+            serialized_name: LanguageCode
+            accessor:
+                getter: getLanguageCode
+                setter: setLanguageCode
+            type: string
+        piecesEnabled:
+            expose: true
+            access_type: public_method
+            serialized_name: PiecesEnabled
+            accessor:
+                getter: getPiecesEnabled
+                setter: setPiecesEnabled
+            type: string
+        latinResponseInd:
+            expose: true
+            access_type: public_method
+            serialized_name: LatinResponseInd
+            accessor:
+                getter: getLatinResponseInd
+                setter: setLatinResponseInd
+            type: string
+        billing:
+            expose: true
+            access_type: public_method
+            serialized_name: Billing
+            accessor:
+                getter: getBilling
+                setter: setBilling
+            type: Dhl\DataTypesGlobal\BillingType
+        consignee:
+            expose: true
+            access_type: public_method
+            serialized_name: Consignee
+            accessor:
+                getter: getConsignee
+                setter: setConsignee
+            type: Dhl\DataTypesGlobal\ConsigneeType
+        commodity:
+            expose: true
+            access_type: public_method
+            serialized_name: Commodity
+            accessor:
+                getter: getCommodity
+                setter: setCommodity
+            xml_list:
+                inline: true
+                entry_name: Commodity
+            type: array<Dhl\DataTypesGlobal\CommodityType>
+        dutiable:
+            expose: true
+            access_type: public_method
+            serialized_name: Dutiable
+            accessor:
+                getter: getDutiable
+                setter: setDutiable
+            type: Dhl\DataTypesGlobal\DutiableType
+        exportDeclaration:
+            expose: true
+            access_type: public_method
+            serialized_name: ExportDeclaration
+            accessor:
+                getter: getExportDeclaration
+                setter: setExportDeclaration
+            type: Dhl\DataTypesGlobal\ExportDeclarationType
+        reference:
+            expose: true
+            access_type: public_method
+            serialized_name: Reference
+            accessor:
+                getter: getReference
+                setter: setReference
+            xml_list:
+                inline: true
+                entry_name: Reference
+            type: array<Dhl\DataTypesGlobal\ReferenceType>
+        shipmentDetails:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentDetails
+            accessor:
+                getter: getShipmentDetails
+                setter: setShipmentDetails
+            type: Dhl\DataTypesGlobal\ShipmentDetailsType
+        shipper:
+            expose: true
+            access_type: public_method
+            serialized_name: Shipper
+            accessor:
+                getter: getShipper
+                setter: setShipper
+            type: Dhl\DataTypesGlobal\ShipperType
+        specialService:
+            expose: true
+            access_type: public_method
+            serialized_name: SpecialService
+            accessor:
+                getter: getSpecialService
+                setter: setSpecialService
+            xml_list:
+                inline: true
+                entry_name: SpecialService
+            type: array<Dhl\DataTypesGlobal\SpecialServiceType>
+        notification:
+            expose: true
+            access_type: public_method
+            serialized_name: Notification
+            accessor:
+                getter: getNotification
+                setter: setNotification
+            type: Dhl\DataTypesGlobal\NotificationType
+        place:
+            expose: true
+            access_type: public_method
+            serialized_name: Place
+            accessor:
+                getter: getPlace
+                setter: setPlace
+            type: Dhl\DataTypesGlobal\PlaceType
+        eProcShip:
+            expose: true
+            access_type: public_method
+            serialized_name: EProcShip
+            accessor:
+                getter: getEProcShip
+                setter: setEProcShip
+            type: string
+        airwaybill:
+            expose: true
+            access_type: public_method
+            serialized_name: Airwaybill
+            accessor:
+                getter: getAirwaybill
+                setter: setAirwaybill
+            type: string
+        docImages:
+            expose: true
+            access_type: public_method
+            serialized_name: DocImages
+            accessor:
+                getter: getDocImages
+                setter: setDocImages
+            type: array<Dhl\DataTypesGlobal\DocImageType>
+            xml_list:
+                inline: false
+                entry_name: DocImage
+        labelImageFormat:
+            expose: true
+            access_type: public_method
+            serialized_name: LabelImageFormat
+            accessor:
+                getter: getLabelImageFormat
+                setter: setLabelImageFormat
+            type: string
+        requestArchiveDoc:
+            expose: true
+            access_type: public_method
+            serialized_name: RequestArchiveDoc
+            accessor:
+                getter: getRequestArchiveDoc
+                setter: setRequestArchiveDoc
+            type: string
+        numberOfArchiveDoc:
+            expose: true
+            access_type: public_method
+            serialized_name: NumberOfArchiveDoc
+            accessor:
+                getter: getNumberOfArchiveDoc
+                setter: setNumberOfArchiveDoc
+            type: integer
+        label:
+            expose: true
+            access_type: public_method
+            serialized_name: Label
+            accessor:
+                getter: getLabel
+                setter: setLabel
+            type: Dhl\DataTypesGlobal\LabelType

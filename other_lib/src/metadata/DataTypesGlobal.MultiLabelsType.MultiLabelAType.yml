@@ -1,0 +1,26 @@
+Dhl\DataTypesGlobal\MultiLabelsType\MultiLabelAType:
+    properties:
+        docName:
+            expose: true
+            access_type: public_method
+            serialized_name: DocName
+            accessor:
+                getter: getDocName
+                setter: setDocName
+            type: string
+        docFormat:
+            expose: true
+            access_type: public_method
+            serialized_name: DocFormat
+            accessor:
+                getter: getDocFormat
+                setter: setDocFormat
+            type: string
+        docImage:
+            expose: true
+            access_type: public_method
+            serialized_name: DocImage
+            accessor:
+                getter: getDocImage
+                setter: setDocImage
+            type: \AnySimpleType

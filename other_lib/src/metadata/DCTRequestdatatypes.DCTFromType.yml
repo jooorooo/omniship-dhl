@@ -1,0 +1,42 @@
+Dhl\DCTRequestdatatypes\DCTFromType:
+    properties:
+        countryCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryCode
+            accessor:
+                getter: getCountryCode
+                setter: setCountryCode
+            type: string
+        postalcode:
+            expose: true
+            access_type: public_method
+            serialized_name: Postalcode
+            accessor:
+                getter: getPostalcode
+                setter: setPostalcode
+            type: string
+        city:
+            expose: true
+            access_type: public_method
+            serialized_name: City
+            accessor:
+                getter: getCity
+                setter: setCity
+            type: string
+        suburb:
+            expose: true
+            access_type: public_method
+            serialized_name: Suburb
+            accessor:
+                getter: getSuburb
+                setter: setSuburb
+            type: string
+        vatNo:
+            expose: true
+            access_type: public_method
+            serialized_name: VatNo
+            accessor:
+                getter: getVatNo
+                setter: setVatNo
+            type: string

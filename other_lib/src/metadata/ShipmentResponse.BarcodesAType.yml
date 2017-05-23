@@ -1,0 +1,42 @@
+Dhl\ShipmentResponse\BarcodesAType:
+    properties:
+        aWBBarCode:
+            expose: true
+            access_type: public_method
+            serialized_name: AWBBarCode
+            accessor:
+                getter: getAWBBarCode
+                setter: setAWBBarCode
+            type: \AnySimpleType
+        originDestnBarcode:
+            expose: true
+            access_type: public_method
+            serialized_name: OriginDestnBarcode
+            accessor:
+                getter: getOriginDestnBarcode
+                setter: setOriginDestnBarcode
+            type: \AnySimpleType
+        clientIDBarCode:
+            expose: true
+            access_type: public_method
+            serialized_name: ClientIDBarCode
+            accessor:
+                getter: getClientIDBarCode
+                setter: setClientIDBarCode
+            type: \AnySimpleType
+        barCode2D:
+            expose: true
+            access_type: public_method
+            serialized_name: BarCode2D
+            accessor:
+                getter: getBarCode2D
+                setter: setBarCode2D
+            type: \AnySimpleType
+        dHLRoutingBarCode:
+            expose: true
+            access_type: public_method
+            serialized_name: DHLRoutingBarCode
+            accessor:
+                getter: getDHLRoutingBarCode
+                setter: setDHLRoutingBarCode
+            type: \AnySimpleType

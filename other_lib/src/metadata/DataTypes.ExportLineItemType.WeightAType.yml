@@ -1,0 +1,18 @@
+Dhl\DataTypes\ExportLineItemType\WeightAType:
+    properties:
+        weight:
+            expose: true
+            access_type: public_method
+            serialized_name: Weight
+            accessor:
+                getter: getWeight
+                setter: setWeight
+            type: float
+        weightUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightUnit
+            accessor:
+                getter: getWeightUnit
+                setter: setWeightUnit
+            type: string

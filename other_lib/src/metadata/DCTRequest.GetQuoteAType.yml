@@ -1,0 +1,42 @@
+Dhl\DCTRequest\GetQuoteAType:
+    properties:
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypes\RequestType
+        from:
+            expose: true
+            access_type: public_method
+            serialized_name: From
+            accessor:
+                getter: getFrom
+                setter: setFrom
+            type: Dhl\DCTRequestdatatypes\DCTFromType
+        bkgDetails:
+            expose: true
+            access_type: public_method
+            serialized_name: BkgDetails
+            accessor:
+                getter: getBkgDetails
+                setter: setBkgDetails
+            type: Dhl\DCTRequestdatatypes\BkgDetailsType
+        to:
+            expose: true
+            access_type: public_method
+            serialized_name: To
+            accessor:
+                getter: getTo
+                setter: setTo
+            type: Dhl\DCTRequestdatatypes\DCTToType
+        dutiable:
+            expose: true
+            access_type: public_method
+            serialized_name: Dutiable
+            accessor:
+                getter: getDutiable
+                setter: setDutiable
+            type: Dhl\DCTRequestdatatypes\DCTDutiableType

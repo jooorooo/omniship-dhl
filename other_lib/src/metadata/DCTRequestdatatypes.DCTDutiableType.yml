@@ -1,0 +1,18 @@
+Dhl\DCTRequestdatatypes\DCTDutiableType:
+    properties:
+        declaredCurrency:
+            expose: true
+            access_type: public_method
+            serialized_name: DeclaredCurrency
+            accessor:
+                getter: getDeclaredCurrency
+                setter: setDeclaredCurrency
+            type: string
+        declaredValue:
+            expose: true
+            access_type: public_method
+            serialized_name: DeclaredValue
+            accessor:
+                getter: getDeclaredValue
+                setter: setDeclaredValue
+            type: float

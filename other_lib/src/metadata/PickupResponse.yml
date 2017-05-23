@@ -1,0 +1,100 @@
+Dhl\PickupResponse:
+    xml_root_name: 'ns-476a4b96:PickupResponse'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        response:
+            expose: true
+            access_type: public_method
+            serialized_name: Response
+            accessor:
+                getter: getResponse
+                setter: setResponse
+            type: Dhl\DataTypesGlobal\ResponseType
+        note:
+            expose: true
+            access_type: public_method
+            serialized_name: Note
+            accessor:
+                getter: getNote
+                setter: setNote
+            type: Dhl\DataTypesGlobal\NoteType
+        confirmationNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: ConfirmationNumber
+            accessor:
+                getter: getConfirmationNumber
+                setter: setConfirmationNumber
+            type: integer
+        readyByTime:
+            expose: true
+            access_type: public_method
+            serialized_name: ReadyByTime
+            accessor:
+                getter: getReadyByTime
+                setter: setReadyByTime
+            type: string
+        secondReadyByTime:
+            expose: true
+            access_type: public_method
+            serialized_name: SecondReadyByTime
+            accessor:
+                getter: getSecondReadyByTime
+                setter: setSecondReadyByTime
+            type: string
+        nextPickupDate:
+            expose: true
+            access_type: public_method
+            serialized_name: NextPickupDate
+            accessor:
+                getter: getNextPickupDate
+                setter: setNextPickupDate
+            type: 'DateTime<''Y-m-d''>'
+        pickupCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupCharge
+            accessor:
+                getter: getPickupCharge
+                setter: setPickupCharge
+            type: float
+        currencyCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyCode
+            accessor:
+                getter: getCurrencyCode
+                setter: setCurrencyCode
+            type: string
+        callInTime:
+            expose: true
+            access_type: public_method
+            serialized_name: CallInTime
+            accessor:
+                getter: getCallInTime
+                setter: setCallInTime
+            type: string
+        secondCallInTime:
+            expose: true
+            access_type: public_method
+            serialized_name: SecondCallInTime
+            accessor:
+                getter: getSecondCallInTime
+                setter: setSecondCallInTime
+            type: string
+        originSvcArea:
+            expose: true
+            access_type: public_method
+            serialized_name: OriginSvcArea
+            accessor:
+                getter: getOriginSvcArea
+                setter: setOriginSvcArea
+            type: string
+        countryCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryCode
+            accessor:
+                getter: getCountryCode
+                setter: setCountryCode
+            type: string

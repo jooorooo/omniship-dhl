@@ -1,0 +1,12 @@
+Dhl\ShipmentRatingErrorResponse:
+    xml_root_name: 'ns-476a4b96:ShipmentRatingErrorResponse'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        response:
+            expose: true
+            access_type: public_method
+            serialized_name: Response
+            accessor:
+                getter: getResponse
+                setter: setResponse
+            type: Dhl\DataTypes\ErrorResponseType

@@ -1,0 +1,18 @@
+Dhl\DataTypesGlobal\ShipmentDateType:
+    properties:
+        shipmentDateFrom:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentDateFrom
+            accessor:
+                getter: getShipmentDateFrom
+                setter: setShipmentDateFrom
+            type: 'DateTime<''Y-m-d''>'
+        shipmentDateTo:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipmentDateTo
+            accessor:
+                getter: getShipmentDateTo
+                setter: setShipmentDateTo
+            type: 'DateTime<''Y-m-d''>'
