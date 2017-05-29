@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl;
+use Dhl\Traits\Request;
 
 /**
  * Class representing BookPURequest
@@ -8,10 +9,12 @@ namespace Dhl;
 class BookPURequest
 {
 
+    use Request;
+
     /**
      * @property float $schemaVersion
      */
-    private $schemaVersion = null;
+    private $schemaVersion = '2.0';
 
     /**
      * @property \Dhl\DataTypesGlobal\RequestType $request

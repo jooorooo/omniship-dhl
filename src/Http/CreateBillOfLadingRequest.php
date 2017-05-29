@@ -22,6 +22,7 @@ use Dhl\DataTypesGlobal\SpecialServiceType;
 use Dhl\Entity\AM\GetQuote;
 use Dhl\DataTypesGlobal\ContactType;
 use Dhl\DataTypesGlobal\ShipmentDetailsType;
+use Dhl\ShipmentRequest;
 use Omniship\Common\ItemBag;
 
 class CreateBillOfLadingRequest extends AbstractRequest
@@ -30,7 +31,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
      * @return GetQuote
      */
     public function getData() {
-        $shipment_request = new \Dhl\ShipmentRequest();
+        $shipment_request = new ShipmentRequest();
         $shipment_request->setRequest($this->getHeaderRequestTypeGlobal());
 
         $shipment_request->setRegionCode('AM');
