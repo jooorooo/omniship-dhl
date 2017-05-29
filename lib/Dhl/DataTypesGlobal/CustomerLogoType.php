@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl\DataTypesGlobal;
+use Dhl\Traits\Request;
 
 /**
  * Class representing CustomerLogoType
@@ -10,6 +11,8 @@ namespace Dhl\DataTypesGlobal;
  */
 class CustomerLogoType
 {
+
+    use Request;
 
     /**
      * @property mixed $logoImage

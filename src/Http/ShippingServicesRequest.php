@@ -18,7 +18,6 @@ use Dhl\DCTRequestdatatypes\DCTFromType;
 use Dhl\DCTRequestdatatypes\DCTToType;
 use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
 use Dhl\DCTRequestdatatypes\QtdShpType;
-use Dhl\Entity\AM\GetQuote;
 use Omniship\Common\ItemBag;
 
 class ShippingServicesRequest extends AbstractRequest
@@ -39,7 +38,7 @@ class ShippingServicesRequest extends AbstractRequest
 
         $request = new DCTRequest();
         $request->setGetQuote($quote);
-
+        
         return $request;
     }
 
@@ -125,6 +124,7 @@ class ShippingServicesRequest extends AbstractRequest
                     $total++;
                 }
             }
+            $request->setNumberOfPieces([$total]);
         }
 
         /*

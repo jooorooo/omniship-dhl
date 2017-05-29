@@ -24,9 +24,9 @@ class AbstractResponse extends BaseAbstractResponse
     public function getMessage()
     {
         if(!empty($this->getXml()->GetQuoteResponse->Note->Condition)) {
-            return (string)$this->getXml()->GetQuoteResponse->Note->Condition->ConditionData;
+            return preg_replace('~([\s]{2,})~', ' ', str_replace(["\n\r", "\r\n", "\r", "\n"], ' ', (string)$this->getXml()->GetQuoteResponse->Note->Condition->ConditionData));
         } elseif(!empty($this->getXml()->Response->Status->Condition)) {
-            return (string)$this->getXml()->Response->Status->Condition->ConditionData;
+            return preg_replace('~([\s]{2,})~', ' ', str_replace(["\n\r", "\r\n", "\r", "\n"], ' ', (string)$this->getXml()->Response->Status->Condition->ConditionData));
         }
         return null;
     }

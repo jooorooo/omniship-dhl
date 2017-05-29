@@ -9,14 +9,19 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
-use Dhl\Client\Web;
-use Dhl\Datatype\GB\CustomerLogo;
-use Dhl\Datatype\GB\Label;
-use Dhl\Datatype\GB\Piece;
-use Dhl\Datatype\GB\SpecialService;
+use Dhl\DataTypesGlobal\BillingType;
+use Dhl\DataTypesGlobal\CommodityType;
+use Dhl\DataTypesGlobal\ConsigneeType;
+use Dhl\DataTypesGlobal\CustomerLogoType;
+use Dhl\DataTypesGlobal\DutiableType;
+use Dhl\DataTypesGlobal\LabelType;
+use Dhl\DataTypesGlobal\PieceType;
+use Dhl\DataTypesGlobal\ReferenceType;
+use Dhl\DataTypesGlobal\ShipperType;
+use Dhl\DataTypesGlobal\SpecialServiceType;
 use Dhl\Entity\AM\GetQuote;
-use Dhl\Entity\GB\ShipmentRequest;
-use Dhl\Entity\GB\ShipmentResponse;
+use Dhl\DataTypesGlobal\ContactType;
+use Dhl\DataTypesGlobal\ShipmentDetailsType;
 use Omniship\Common\ItemBag;
 
 class CreateBillOfLadingRequest extends AbstractRequest
@@ -25,137 +30,50 @@ class CreateBillOfLadingRequest extends AbstractRequest
      * @return GetQuote
      */
     public function getData() {
-        $shipment_request = new ShipmentRequest();
-        $shipment_request->SiteID = $this->getUsername();
-        $shipment_request->Password = $this->getPassword();
+        $shipment_request = new \Dhl\ShipmentRequest();
+        $shipment_request->setRequest($this->getHeaderRequestTypeGlobal());
 
-        // Set values of the request
-        $shipment_request->MessageTime = $this->getShipmentDate()->format('Y-m-d\TH:i:sP');
-        $shipment_request->MessageReference = md5($this->getTransactionId());
+        $shipment_request->setRegionCode('AM');
+        $shipment_request->setRequestedPickupTime('Y');
+        $shipment_request->setNewShipper('Y');
+        $shipment_request->setLanguageCode($this->getLanguageCode());
+        $shipment_request->setPiecesEnabled('Y');
 
-        $shipment_request->RegionCode = 'EU';
-        $shipment_request->RequestedPickupTime = 'Y';
-        $shipment_request->NewShipper = 'Y';
-        $shipment_request->LanguageCode = $this->getLanguageCode();
-        $shipment_request->PiecesEnabled = 'Y';
+        $shipment_request->setBilling($this->_getBilling());
 
-        $shipment_request->Billing->ShipperAccountNumber = $this->getShipperAccountNumber();
-        $shipment_request->Billing->ShippingPaymentType = 'S';
-        $shipment_request->Billing->BillingAccountNumber = $this->getBillingAccountNumber();
-        $shipment_request->Billing->DutyPaymentType = 'S';
-        $shipment_request->Billing->DutyAccountNumber = $this->getDutyAccountNumber();
+        $shipment_request->setConsignee($this->_getConsignee());
 
-        $receiver_address = $this->getReceiverAddress();
-        $country = $receiver_address->getCountry();
-        $shipment_request->Consignee->CompanyName = $receiver_address->getCompanyName() ? : ($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName());
-        $shipment_request->Consignee->addAddressLine($receiver_address->getAddress1());
-        $shipment_request->Consignee->addAddressLine($receiver_address->getAddress2());
-        $shipment_request->Consignee->City = $receiver_address->getCity() ? $receiver_address->getCity()->getName() : '';
-        $shipment_request->Consignee->PostalCode = $receiver_address->getPostCode();
-        $shipment_request->Consignee->CountryCode = $country ? $country->getIso2() : '';
-        $shipment_request->Consignee->CountryName = $country ? $country->getName() : '';
-        $shipment_request->Consignee->Contact->PersonName = $receiver_address->getFirstName() . ' ' . $receiver_address->getLastName();
-        $shipment_request->Consignee->Contact->PhoneNumber = $receiver_address->getPhone();
-        $shipment_request->Consignee->Contact->PhoneExtension = '';
-        $shipment_request->Consignee->Contact->FaxNumber = '';
-        $shipment_request->Consignee->Contact->Telex = '';
-        $shipment_request->Consignee->Contact->Email = $this->getOtherParameters('receiver_email');
+        $commodity_type = new CommodityType();
+        $commodity_type->setCommodityCode('cc');
+        $commodity_type->setCommodityName('cn');
+        $shipment_request->setCommodity([$commodity_type]);
 
-        $shipment_request->Commodity->CommodityCode = 'cc';
-        $shipment_request->Commodity->CommodityName = 'cn';
-
-        $da = $this->getDeclaredAmount();
-        if($da && $da > 0) {
-            $shipment_request->Dutiable->DeclaredValue = $da;
-            $shipment_request->Dutiable->DeclaredCurrency = $this->getDeclaredCurrency() ? : $this->getCurrency();
-//            $shipment_request->Dutiable->ScheduleB = '3002905110';
-//            $shipment_request->Dutiable->ExportLicense = 'D123456';
-//            $shipment_request->Dutiable->ShipperEIN = '112233445566';
-//            $shipment_request->Dutiable->ShipperIDType = 'S';
-//            $shipment_request->Dutiable->ImportLicense = 'ALFAL';
-//            $shipment_request->Dutiable->ConsigneeEIN = 'ConEIN2123';
-//            $shipment_request->Dutiable->TermsOfTrade = 'DTP';
+        if(!is_null($dutiable = $this->_getDutiable())) {
+            $shipment_request->setDutiable($dutiable);
         }
 
-        $shipment_request->Reference->ReferenceID = $this->getOtherParameters('contents_text');
-        $shipment_request->Reference->ReferenceType = $this->getOtherParameters('packing_type');
+//        Customer sends shipment validation request message for Baby Shipment with relevant shipment information and the below information
+//        $reference_type = new ReferenceType();
+//        $reference_type->setReferenceID($this->getOtherParameters('contents_text'));
+//        $reference_type->setReferenceType($this->getOtherParameters('packing_type'));
+//        $shipment_request->setReference([$reference_type]);
 
-        /** @var $items ItemBag */
-        $items = $this->getItems();
-        if($items) {
-            $total = 0;
-            foreach($items->all() as $item) {
-                for($i=1; $i<=$item->getQuantity(); $i++) {
-                    $piece = new Piece();
-                    $piece->PieceID = $item->getId();
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->Height = $item->getHeight();
-                        $piece->Depth = $item->getDepth();
-                        $piece->Width = $item->getWidth();
-                    }
-                    $piece->Weight = $item->getWeight();
-                    $shipment_request->ShipmentDetails->addPiece($piece);
-                    $total++;
-                }
-            }
-            $shipment_request->ShipmentDetails->NumberOfPieces = $total;
-        }
+        $shipment_request->setShipmentDetails($this->_getShipmentDetails());
 
-        $shipment_request->ShipmentDetails->Weight = $this->getWeight();
-        $shipment_request->ShipmentDetails->WeightUnit = $this->getWeightUnit() == 'KG' ? 'K' : 'L';
-        $shipment_request->ShipmentDetails->GlobalProductCode = $this->getServiceId(); //service GlobalProductCode
-        $shipment_request->ShipmentDetails->LocalProductCode = $this->getServiceId(); //service LocalProductCode
-        $shipment_request->ShipmentDetails->Date = $this->getShipmentDate() ? $this->getShipmentDate()->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-        $shipment_request->ShipmentDetails->Contents = $this->getOtherParameters('contents_text');
-        $shipment_request->ShipmentDetails->DoorTo = 'DD';
-        $shipment_request->ShipmentDetails->DimensionUnit = $this->getDimensionUnit() == 'CM' ? 'C' : 'I';
-        if(($ia = $this->getInsuranceAmount()) > 0) {
-            $shipment_request->ShipmentDetails->InsuredAmount = $ia;
-        }
+        $shipment_request->setShipper($this->_getShipper());
 
-        $shipment_request->ShipmentDetails->PackageType = 'YP';
-        $shipment_request->ShipmentDetails->IsDutiable = $this->getDutiable() ? 'Y' : 'N';
-        $shipment_request->ShipmentDetails->CurrencyCode = $this->getCurrency();
+        $specialService = new SpecialServiceType();
+        $specialService->setSpecialServiceType('A');
+        $shipment_request->addToSpecialService($specialService);
 
-        $shipping_address = $this->getSenderAddress();
-        $country = $shipping_address->getCountry();
-        $shipment_request->Shipper->ShipperID = $this->getShipperAccountNumber(); //@todo ??
-        $shipment_request->Shipper->CompanyName = $shipping_address->getCompanyName() ? : $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName();
-//        $shipment_request->Shipper->RegisteredAccount = $this->getShipperAccountNumber(); //@todo ???
-        foreach([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
-            if(trim($line)) {
-                $shipment_request->Shipper->addAddressLine($line);
-            }
-        }
-        $shipment_request->Shipper->City = $shipping_address->getCity() ? $shipping_address->getCity()->getName() : '';
-//        $shipment_request->Shipper->Division = 'mo';
-//        $shipment_request->Shipper->DivisionCode = 'mo';
-        $shipment_request->Shipper->PostalCode = $shipping_address->getPostCode();
-        $shipment_request->Shipper->CountryCode = $country ? $country->getIso2() : '';
-        $shipment_request->Shipper->CountryName = $country ? $country->getName() : '';
-        $shipment_request->Shipper->Contact->PersonName = $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName();
-        $shipment_request->Shipper->Contact->PhoneNumber = $shipping_address->getPhone();
-//        $shipment_request->Shipper->Contact->PhoneExtension = '3403';
-//        $shipment_request->Shipper->Contact->FaxNumber = '1 905 8613411';
-//        $shipment_request->Shipper->Contact->Telex = '1245';
-//        $shipment_request->Shipper->Contact->Email = 'test@email.com';
+        $specialService = new SpecialServiceType();
+        $specialService->setSpecialServiceType('I');
+        $shipment_request->addToSpecialService($specialService);
 
-        $specialService = new SpecialService();
-        $specialService->SpecialServiceType = 'A';
-        $shipment_request->addSpecialService($specialService);
+        $shipment_request->setEProcShip('N');
+        $shipment_request->setLabelImageFormat('PDF');
 
-        $specialService = new SpecialService();
-        $specialService->SpecialServiceType = 'I';
-        $shipment_request->addSpecialService($specialService);
-
-        $shipment_request->EProcShip = 'N';
-        $shipment_request->LabelImageFormat = 'PDF';
-        $shipment_request->Label = new Label();
-        $shipment_request->Label->LabelTemplate = '8X4_A4_PDF';
-        $shipment_request->Label->Logo = 'Y';
-        $shipment_request->Label->CustomerLogo = new CustomerLogo();
-        $shipment_request->Label->CustomerLogo->LogoImage = base64_encode(file_get_contents('http://www.terramall.bg/images/new_logo-ZORA.jpg'));
-        $shipment_request->Label->CustomerLogo->LogoImageFormat = 'JPEG';
+        $shipment_request->setLabel($this->_getLabel());
 
         return $shipment_request;
     }
@@ -167,6 +85,185 @@ class CreateBillOfLadingRequest extends AbstractRequest
     protected function createResponse($data)
     {
         return $this->response = new CreateBillOfLadingResponse($this, $data);
+    }
+
+    /**
+     * @return BillingType
+     */
+    protected function _getBilling() {
+        $request = new BillingType();
+        $request->setShipperAccountNumber($this->getShipperAccountNumber());
+        $request->setShippingPaymentType('S');
+        $request->setBillingAccountNumber($this->getBillingAccountNumber());
+        $request->setDutyPaymentType('S');
+        $request->setDutyAccountNumber($this->getDutyAccountNumber());
+        return $request;
+    }
+
+    /**
+     * @return ConsigneeType
+     */
+    protected function _getConsignee() {
+        $request = new ConsigneeType();
+
+        $receiver_address = $this->getReceiverAddress();
+        $country = $receiver_address->getCountry();
+        $request->setCompanyName($receiver_address->getCompanyName() ? : ($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName()));
+        $request->addToAddressLine($receiver_address->getAddress1());
+        $request->addToAddressLine($receiver_address->getAddress2());
+        $request->addToAddressLine($receiver_address->getAddress3());
+        $request->setCity($receiver_address->getCity() ? $receiver_address->getCity()->getName() : '');
+        $request->setPostalCode($receiver_address->getPostCode());
+        $request->setCountryCode($country ? $country->getIso2() : '');
+        $request->setCountryName($country ? $country->getName() : '');
+
+        $contact = new ContactType();
+        $contact->setPersonName($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName());
+        $contact->setPhoneNumber($receiver_address->getPhone());
+//        $request->setPhoneExtension('');
+//        $contact->setFaxNumber('');
+//        $contact->setTelex('');
+        $contact->setEmail($this->getOtherParameters('receiver_email'));
+
+        $request->setContact($contact);
+
+        return $request;
+    }
+
+    /**
+     * @return DutiableType|null
+     */
+    protected function _getDutiable() {
+        $da = $this->getDeclaredAmount();
+        if(!$da || $da <=0) {
+            return null;
+        }
+        $request = new DutiableType();
+        $request->setDeclaredValue($da);
+        $request->setDeclaredCurrency($this->getDeclaredCurrency());
+//        $request->setScheduleB('3002905110');
+//        $request->setExportLicense('D123456');
+//        $request->setShipperEIN('112233445566');
+//        $request->setShipperIDType('S');
+//        $request->setImportLicense('ALFAL');
+//        $request->setConsigneeEIN('ConEIN2123');
+//        $request->setTermsOfTrade('DTP');
+        return $request;
+    }
+
+    /**
+     * @return ShipmentDetailsType
+     */
+    protected function _getShipmentDetails() {
+        $request = new ShipmentDetailsType();
+
+        /** @var $items ItemBag */
+        $items = $this->getItems();
+        if($items) {
+            $total = 0;
+            foreach($items->all() as $item) {
+                for($i=1; $i<=$item->getQuantity(); $i++) {
+                    $piece = new PieceType();
+                    $piece->setPieceID($item->getId());
+                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                        $piece->setHeight($item->getHeight());
+                        $piece->setDepth($item->getDepth());
+                        $piece->setWidth($item->getWidth());
+                    }
+                    $piece->setWeight($item->getWeight());
+                    $request->addToPieces($piece);
+                    $total++;
+                }
+            }
+            $request->setNumberOfPieces($total);
+        }
+
+        $request->setWeight($this->getWeight());
+        $request->setWeightUnit($this->getWeightUnit() == 'KG' ? 'K' : 'L');
+        $request->setGlobalProductCode($this->getServiceId()); //service GlobalProductCode
+        $request->setLocalProductCode($this->getServiceId()); //service LocalProductCode
+        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now() );
+        $request->setContents($this->getOtherParameters('contents_text'));
+        $request->setDoorTo('DD');
+        $request->setDimensionUnit($this->getDimensionUnit() == 'CM' ? 'C' : 'I');
+        if(($ia = $this->getInsuranceAmount()) > 0) {
+            $request->setInsuredAmount($ia);
+        }
+
+        $request->setPackageType('YP');
+        $request->setIsDutiable($this->getDutiable() ? 'Y' : 'N');
+        $request->setCurrencyCode($this->getCurrency());
+
+        return $request;
+    }
+
+    /**
+     * @return ShipperType
+     */
+    protected function _getShipper() {
+        $request = new ShipperType();
+
+        $shipping_address = $this->getSenderAddress();
+        $request->setShipperID($this->getShipperAccountNumber()); //@todo ??
+        $request->setCompanyName($shipping_address->getCompanyName() ? : $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+//        $request->setRegisteredAccount($this->getShipperAccountNumber()); //@todo ???
+        foreach([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
+            if(trim($line)) {
+                $request->addToAddressLine($line);
+            }
+        }
+        if(!is_null($city = $shipping_address->getCity())) {
+            $request->setCity($city->getName());
+        }
+//        $request->setDivision('mo');
+//        $request->setDivisionCode('mo');
+        $request->setPostalCode($shipping_address->getPostCode());
+        if(!is_null($country = $shipping_address->getCountry())) {
+            $request->setCountryCode($country->getIso2());
+            $request->setCountryName($country->getName());
+        }
+
+        $contact = new ContactType();
+        $contact->setPersonName($shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+        $contact->setPhoneNumber($shipping_address->getPhone());
+//        $request->setPhoneExtension('');
+//        $contact->setFaxNumber('');
+//        $contact->setTelex('');
+//        $contact->setEmail($this->getOtherParameters('receiver_email'));
+
+        $request->setContact($contact);
+
+        return $request;
+    }
+
+    /**
+     * @return LabelType
+     */
+    protected function _getLabel() {
+        $request = new LabelType();
+        $request->setLabelTemplate('8X4_A4_PDF');
+        $request->setLogo('Y');
+
+        if(!is_null($logo = $this->getLogo()) && $data = @file_get_contents($logo)) {
+            $customer_logo = new CustomerLogoType();
+            $customer_logo->setLogoImage(base64_encode($data));
+            $customer_logo->setLogoImageFormat($this->_findLogoExtension($logo));
+
+            $request->setCustomerLogo($customer_logo);
+        }
+
+//        $request->setDocDetach();
+//        $request->setHideAccount();
+//        $request->setReceiptTemplate();
+//        $request->setResolution();
+
+        return $request;
+    }
+
+    protected function _findLogoExtension($logo) {
+        $extension = pathinfo($logo, PATHINFO_EXTENSION);
+        $extension = explode('?', $extension);
+        return strtoupper($extension[0]);
     }
 
 }

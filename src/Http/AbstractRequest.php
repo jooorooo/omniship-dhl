@@ -10,7 +10,9 @@ namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
 use Dhl\DataTypes\RequestType;
+use Dhl\DataTypesGlobal\RequestType AS GlobalRequestType;
 use Dhl\DataTypes\ServiceHeaderType;
+use Dhl\DataTypesGlobal\ServiceHeaderType AS GlobalServiceHeaderType;
 use Omniship\Exceptions\InvalidResponseException;
 use Omniship\Message\AbstractRequest AS BaseAbstractRequest;
 
@@ -106,6 +108,21 @@ abstract class AbstractRequest extends BaseAbstractRequest
         $headers->setMessageTime($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
         $request = new RequestType();
+        $request->setServiceHeader($headers);
+        return $request;
+    }
+
+    /**
+     * @return GlobalRequestType
+     */
+    public function getHeaderRequestTypeGlobal() {
+        $headers = new GlobalServiceHeaderType();
+        $headers->setSiteID($this->getUsername());
+        $headers->setPassword($this->getPassword());
+        $headers->setMessageReference(md5($this->getTransactionId()));
+        $headers->setMessageTime($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
+
+        $request = new GlobalRequestType();
         $request->setServiceHeader($headers);
         return $request;
     }

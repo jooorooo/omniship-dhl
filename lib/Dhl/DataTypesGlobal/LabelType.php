@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl\DataTypesGlobal;
+use Dhl\Traits\Request;
 
 /**
  * Class representing LabelType
@@ -10,6 +11,8 @@ namespace Dhl\DataTypesGlobal;
  */
 class LabelType
 {
+
+    use Request;
 
     /**
      * @property string $hideAccount

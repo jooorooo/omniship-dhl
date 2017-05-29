@@ -94,14 +94,24 @@ trait Request
             }
             elseif(is_array($value))
             {
-                $string = !empty($value[0]) && (!is_array($value[0]) && !is_object($value[0]));
-                $string ? null : $xmlWriter->startElement($name);
-                foreach ($value AS $key => $val) {
-                    if ($val) {
-                        $this->_write($xmlWriter, $name, $val, !$string);
+                if(in_array($name, ['SpecialService'])) {
+                    foreach ($value AS $key => $val) {
+                        if ($val) {
+                            $xmlWriter->startElement($name);
+                            $val->toXML($xmlWriter);
+                            $xmlWriter->endElement();
+                        }
                     }
+                } else {
+                    $string = !empty($value[0]) && (!is_array($value[0]) && !is_object($value[0]));
+                    $string ? null : $xmlWriter->startElement($name);
+                    foreach ($value AS $key => $val) {
+                        if ($val) {
+                            $this->_write($xmlWriter, $name, $val, !$string);
+                        }
+                    }
+                    $string ? null : $xmlWriter->endElement();
                 }
-                $string ? null : $xmlWriter->endElement();
             } else
             {
                 $xmlWriter->writeElement($name, $value);
