@@ -13,7 +13,8 @@
 
     "autoload": {
       "psr-4": {
-        "Omniship\\Dhl\\": "src"
+        "Omniship\\Dhl\\": "src",
+        "Dhl\\": "lib\\Dhl"
       }
     },
 

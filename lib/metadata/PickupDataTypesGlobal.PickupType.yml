@@ -1,0 +1,66 @@
+Dhl\PickupDataTypesGlobal\PickupType:
+    properties:
+        pickupDate:
+            expose: true
+            access_type: public_method
+            serialized_name: PickupDate
+            accessor:
+                getter: getPickupDate
+                setter: setPickupDate
+            type: 'DateTime<''Y-m-d''>'
+        readyByTime:
+            expose: true
+            access_type: public_method
+            serialized_name: ReadyByTime
+            accessor:
+                getter: getReadyByTime
+                setter: setReadyByTime
+            type: string
+        closeTime:
+            expose: true
+            access_type: public_method
+            serialized_name: CloseTime
+            accessor:
+                getter: getCloseTime
+                setter: setCloseTime
+            type: string
+        afterHoursClosingTime:
+            expose: true
+            access_type: public_method
+            serialized_name: AfterHoursClosingTime
+            accessor:
+                getter: getAfterHoursClosingTime
+                setter: setAfterHoursClosingTime
+            type: string
+        afterHoursLocation:
+            expose: true
+            access_type: public_method
+            serialized_name: AfterHoursLocation
+            accessor:
+                getter: getAfterHoursLocation
+                setter: setAfterHoursLocation
+            type: string
+        pieces:
+            expose: true
+            access_type: public_method
+            serialized_name: Pieces
+            accessor:
+                getter: getPieces
+                setter: setPieces
+            type: integer
+        weight:
+            expose: true
+            access_type: public_method
+            serialized_name: weight
+            accessor:
+                getter: getWeight
+                setter: setWeight
+            type: Dhl\DataTypesGlobal\WeightSegType
+        specialInstructions:
+            expose: true
+            access_type: public_method
+            serialized_name: SpecialInstructions
+            accessor:
+                getter: getSpecialInstructions
+                setter: setSpecialInstructions
+            type: string

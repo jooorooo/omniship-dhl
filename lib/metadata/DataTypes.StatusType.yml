@@ -1,0 +1,21 @@
+Dhl\DataTypes\StatusType:
+    properties:
+        actionStatus:
+            expose: true
+            access_type: public_method
+            serialized_name: ActionStatus
+            accessor:
+                getter: getActionStatus
+                setter: setActionStatus
+            type: string
+        condition:
+            expose: true
+            access_type: public_method
+            serialized_name: Condition
+            accessor:
+                getter: getCondition
+                setter: setCondition
+            xml_list:
+                inline: true
+                entry_name: Condition
+            type: array<Dhl\DataTypes\ConditionType>

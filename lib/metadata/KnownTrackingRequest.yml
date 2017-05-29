@@ -1,0 +1,66 @@
+Dhl\KnownTrackingRequest:
+    xml_root_name: 'ns-476a4b96:KnownTrackingRequest'
+    xml_root_namespace: 'http://www.dhl.com'
+    properties:
+        request:
+            expose: true
+            access_type: public_method
+            serialized_name: Request
+            accessor:
+                getter: getRequest
+                setter: setRequest
+            type: Dhl\DataTypes\RequestType
+        languageCode:
+            expose: true
+            access_type: public_method
+            serialized_name: LanguageCode
+            accessor:
+                getter: getLanguageCode
+                setter: setLanguageCode
+            type: string
+        aWBNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: AWBNumber
+            accessor:
+                getter: getAWBNumber
+                setter: setAWBNumber
+            xml_list:
+                inline: true
+                entry_name: AWBNumber
+            type: array<string>
+        lPNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: LPNumber
+            accessor:
+                getter: getLPNumber
+                setter: setLPNumber
+            xml_list:
+                inline: true
+                entry_name: LPNumber
+            type: array<string>
+        levelOfDetails:
+            expose: true
+            access_type: public_method
+            serialized_name: LevelOfDetails
+            accessor:
+                getter: getLevelOfDetails
+                setter: setLevelOfDetails
+            type: string
+        piecesEnabled:
+            expose: true
+            access_type: public_method
+            serialized_name: PiecesEnabled
+            accessor:
+                getter: getPiecesEnabled
+                setter: setPiecesEnabled
+            type: string
+        countryCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryCode
+            accessor:
+                getter: getCountryCode
+                setter: setCountryCode
+            type: string

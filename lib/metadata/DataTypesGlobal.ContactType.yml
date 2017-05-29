@@ -1,0 +1,58 @@
+Dhl\DataTypesGlobal\ContactType:
+    properties:
+        personName:
+            expose: true
+            access_type: public_method
+            serialized_name: PersonName
+            accessor:
+                getter: getPersonName
+                setter: setPersonName
+            type: string
+        phoneNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: PhoneNumber
+            accessor:
+                getter: getPhoneNumber
+                setter: setPhoneNumber
+            type: string
+        phoneExtension:
+            expose: true
+            access_type: public_method
+            serialized_name: PhoneExtension
+            accessor:
+                getter: getPhoneExtension
+                setter: setPhoneExtension
+            type: string
+        faxNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: FaxNumber
+            accessor:
+                getter: getFaxNumber
+                setter: setFaxNumber
+            type: string
+        telex:
+            expose: true
+            access_type: public_method
+            serialized_name: Telex
+            accessor:
+                getter: getTelex
+                setter: setTelex
+            type: string
+        email:
+            expose: true
+            access_type: public_method
+            serialized_name: Email
+            accessor:
+                getter: getEmail
+                setter: setEmail
+            type: string
+        mobilePhoneNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: MobilePhoneNumber
+            accessor:
+                getter: getMobilePhoneNumber
+                setter: setMobilePhoneNumber
+            type: integer

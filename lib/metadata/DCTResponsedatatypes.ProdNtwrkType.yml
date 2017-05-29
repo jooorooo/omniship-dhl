@@ -1,0 +1,10 @@
+Dhl\DCTResponsedatatypes\ProdNtwrkType:
+    properties:
+        networkTypeCode:
+            expose: true
+            access_type: public_method
+            serialized_name: NetworkTypeCode
+            accessor:
+                getter: getNetworkTypeCode
+                setter: setNetworkTypeCode
+            type: string

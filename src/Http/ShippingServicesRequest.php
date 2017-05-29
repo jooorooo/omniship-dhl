@@ -9,81 +9,38 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
-use Dhl\Datatype\AM\PieceType;
+use Dhl\DCTRequestdatatypes\PieceType;
+use Dhl\DCTRequest;
+use Dhl\DCTRequest\GetQuoteAType;
+use Dhl\DCTRequestdatatypes\BkgDetailsType;
+use Dhl\DCTRequestdatatypes\DCTDutiableType;
+use Dhl\DCTRequestdatatypes\DCTFromType;
+use Dhl\DCTRequestdatatypes\DCTToType;
+use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
+use Dhl\DCTRequestdatatypes\QtdShpType;
 use Dhl\Entity\AM\GetQuote;
 use Omniship\Common\ItemBag;
 
 class ShippingServicesRequest extends AbstractRequest
 {
     /**
-     * @return GetQuote
+     * @return DCTRequest
      */
     public function getData() {
-        $quote = new GetQuote();
-        $quote->SiteID = $this->getUsername();
-        $quote->Password = $this->getPassword();
+        $quote = new GetQuoteAType();
+        $quote->setRequest($this->getHeaderRequestType());
 
-        // Set values of the request
-        $quote->MessageTime = Carbon::now()->format('Y-m-d\TH:i:sP');
-        $quote->MessageReference = md5($this->getTransactionId());
-
-        $quote->BkgDetails->Date = $this->getShipmentDate() ? $this->getShipmentDate()->format('Y-m-d') : Carbon::now()->format('Y-m-d');
-
-        /** @var $items ItemBag */
-        $items = $this->getItems();
-        if($items) {
-            foreach($items->all() as $item) {
-                for($i=1; $i<=$item->getQuantity(); $i++) {
-                    $piece = new PieceType();
-                    $piece->PieceID = $item->getId();
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->Height = $item->getHeight();
-                        $piece->Depth = $item->getDepth();
-                        $piece->Width = $item->getWidth();
-                    }
-                    $piece->Weight = $item->getWeight();
-                    $quote->BkgDetails->addPiece($piece);
-                }
-            }
+        $quote->setFrom($this->_getFrom());
+        $quote->setTo($this->_getTo());
+        if(!is_null($dutiable = $this->_getDutiable())) {
+            $quote->setDutiable($dutiable);
         }
+        $quote->setBkgDetails($this->_getBkgDetails());
 
-        $quote->BkgDetails->ReadyTime = 'PT18H21M';
-//        $quote->BkgDetails->ReadyTimeGMTOffset = '+01:00';
-        $quote->BkgDetails->DimensionUnit = $this->getDimensionUnit();
-        $quote->BkgDetails->WeightUnit = $this->getWeightUnit();
-        $quote->BkgDetails->IsDutiable = $this->getDutiable() ? 'Y' : 'N';
+        $request = new DCTRequest();
+        $request->setGetQuote($quote);
 
-        $quote->BkgDetails->PaymentCountryCode = $this->getReceiverAddress()->getCountry()->getIso2();
-
-        if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
-//            $quote->BkgDetails->CODAccountNumber = '100000000001';
-            $quote->BkgDetails->CODAmount = $cod;
-            $quote->BkgDetails->CODCurrencyCode = $this->getCashOnDeliveryCurrency() ?: $this->getCurrency();
-        }
-
-        if(($ia = $this->getInsuranceAmount()) > 0) {
-            $quote->BkgDetails->InsuredValue = $ia;
-            $quote->BkgDetails->InsuredCurrency = $this->getInsuranceCurrency() ? : $this->getCurrency();
-        }
-
-        // Request Paperless trade
-        $quote->BkgDetails->QtdShp->QtdShpExChrg->SpecialServiceType = 'OSINFO';
-
-        $quote->From->CountryCode = $this->getSenderAddress()->getCountry()->getIso2();
-        $quote->From->Postalcode = $this->getSenderAddress()->getPostCode();
-        $quote->From->City = $this->getSenderAddress()->getCity()->getName();
-
-        $quote->To->CountryCode = $this->getReceiverAddress()->getCountry()->getIso2();
-        $quote->To->Postalcode = $this->getReceiverAddress()->getPostCode();
-        $quote->To->City = $this->getReceiverAddress()->getCity()->getName();
-
-        $da = $this->getDeclaredAmount();
-        if($da && $da > 0) {
-            $quote->Dutiable->DeclaredValue = $da;
-            $quote->Dutiable->DeclaredCurrency = $this->getDeclaredCurrency() ? : $this->getCurrency();
-        }
-
-        return $quote;
+        return $request;
     }
 
     /**
@@ -95,4 +52,127 @@ class ShippingServicesRequest extends AbstractRequest
         return $this->response = new ShippingServicesResponse($this, $data);
     }
 
+    /**
+     * @return DCTFromType
+     */
+    protected function _getFrom() {
+        $request = new DCTFromType();
+        if(!is_null($country = $this->getSenderAddress()->getCountry())) {
+            $request->setCountryCode($country->getIso2());
+        }
+        if(!is_null($city = $this->getSenderAddress()->getCity())) {
+            $request->setCity($city->getName());
+        }
+        $request->setPostalcode($this->getSenderAddress()->getPostCode());
+//        $request->setSuburb();
+//        $request->setVatNo();
+        return $request;
+    }
+
+    /**
+     * @return DCTToType
+     */
+    protected function _getTo() {
+        $request = new DCTToType();
+        if(!is_null($country = $this->getReceiverAddress()->getCountry())) {
+            $request->setCountryCode($country->getIso2());
+        }
+        if(!is_null($city = $this->getReceiverAddress()->getCity())) {
+            $request->setCity($city->getName());
+        }
+        $request->setPostalcode($this->getSenderAddress()->getPostCode());
+//        $request->setSuburb();
+//        $request->setVatNo();
+        return $request;
+    }
+
+    /**
+     * @return DCTDutiableType|null
+     */
+    protected function _getDutiable() {
+        $da = $this->getDeclaredAmount();
+        $request = null;
+        if($da && $da > 0) {
+            $request = new DCTDutiableType();
+            $request->setDeclaredCurrency($this->getDeclaredCurrency());
+            $request->setDeclaredValue($this->getDeclaredAmount());
+        }
+        return $request;
+    }
+
+    /**
+     * @return BkgDetailsType
+     */
+    protected function _getBkgDetails() {
+        $request = new BkgDetailsType();
+        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
+
+        /** @var $items ItemBag */
+        $items = $this->getItems();
+        if($items) {
+            $total = 0;
+            foreach($items->all() as $item) {
+                for($i=1; $i<=$item->getQuantity(); $i++) {
+                    $piece = new PieceType();
+                    $piece->setPieceID($item->getId());
+                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                        $piece->setHeight($item->getHeight());
+                        $piece->setDepth($item->getDepth());
+                        $piece->setWidth($item->getWidth());
+                    }
+                    $piece->setWeight($item->getWeight());
+                    $request->addToPieces($piece);
+                    $total++;
+                }
+            }
+        }
+
+        /*
+         * Time when the shipment can
+         * be picked up. Used to
+         * calculate the available
+         * capabilities and do a next day
+         * skip if  all pickup times have
+         * passed for the requested day.
+         *
+         * P indicates the period (required)
+         * T indicates the start of a time
+         * section
+         * nH indicates the number of hours
+         * nM indicates the number of
+         * minutes
+         *
+         * Eg. PT10H21M
+         */
+        $request->setReadyTime(new \DateInterval('PT18H21M'));
+
+//        $request->setReadyTimeGMTOffset('+01:00');
+        $request->setDimensionUnit($this->getDimensionUnit()); //IN, CM
+        $request->setWeightUnit($this->getWeightUnit()); //KG, LB
+        $request->setIsDutiable($this->getDutiable() ? 'Y' : 'N');
+
+        $request->setPaymentCountryCode($this->getReceiverAddress()->getCountry()->getIso2());
+
+        if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
+//            $request->setCODAccountNumber($this->getBillingAccountNumber());
+            $request->setCODAmount($cod);
+            $request->setCODCurrencyCode($this->getCashOnDeliveryCurrency());
+        }
+
+        if(($ia = $this->getInsuranceAmount()) > 0) {
+            $request->setInsuredValue($ia);
+            $request->setInsuredCurrency($this->getInsuranceCurrency());
+        }
+
+        // Request Paperless trade
+        $qtd_shp_ex_chrg = new QtdShpExChrgType();
+        $qtd_shp_ex_chrg->setSpecialServiceType('OSINFO');
+
+        $qtd_shp = new QtdShpType();
+        $qtd_shp->setQtdShpExChrg([$qtd_shp_ex_chrg]);
+
+        $request->setQtdShp([$qtd_shp]);
+
+        return $request;
+    }
 }

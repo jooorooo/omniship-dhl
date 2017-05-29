@@ -1,0 +1,26 @@
+Dhl\PickupDataTypesGlobal\LargestPieceType:
+    properties:
+        width:
+            expose: true
+            access_type: public_method
+            serialized_name: Width
+            accessor:
+                getter: getWidth
+                setter: setWidth
+            type: integer
+        height:
+            expose: true
+            access_type: public_method
+            serialized_name: Height
+            accessor:
+                getter: getHeight
+                setter: setHeight
+            type: integer
+        depth:
+            expose: true
+            access_type: public_method
+            serialized_name: Depth
+            accessor:
+                getter: getDepth
+                setter: setDepth
+            type: integer

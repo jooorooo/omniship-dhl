@@ -16,6 +16,7 @@ use Omniship\Common\TrackingBag;
 
 class TrackingParcelResponse extends AbstractResponse
 {
+
     /**
      * @var \SimpleXMLElement
      */

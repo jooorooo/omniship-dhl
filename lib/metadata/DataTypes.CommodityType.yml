@@ -1,0 +1,18 @@
+Dhl\DataTypes\CommodityType:
+    properties:
+        commodityCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CommodityCode
+            accessor:
+                getter: getCommodityCode
+                setter: setCommodityCode
+            type: string
+        commodityName:
+            expose: true
+            access_type: public_method
+            serialized_name: CommodityName
+            accessor:
+                getter: getCommodityName
+                setter: setCommodityName
+            type: string

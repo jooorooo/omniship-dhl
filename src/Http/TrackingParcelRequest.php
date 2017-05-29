@@ -9,7 +9,9 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
-use Dhl\Entity\EA\KnownTrackingRequest;
+use Dhl\DataTypes\RequestType;
+use Dhl\DataTypes\ServiceHeaderType;
+use Dhl\KnownTrackingRequest;
 
 class TrackingParcelRequest extends AbstractRequest
 {
@@ -17,22 +19,16 @@ class TrackingParcelRequest extends AbstractRequest
      * @return KnownTrackingRequest
      */
     public function getData() {
+        $tracking = new KnownTrackingRequest;
+        $tracking->setRequest($this->getHeaderRequestType());
 
-        $request = new KnownTrackingRequest();
-        $request->SiteID = $this->getUsername();
-        $request->Password = $this->getPassword();
+        $tracking->setLanguageCode($this->getLanguageCode());
+//        $tracking->CountryCode = 'BG';
+        $tracking->setAWBNumber([$this->getParcelId()]);
+        $tracking->setLevelOfDetails('ALL_CHECK_POINTS');
+        $tracking->setPiecesEnabled('S');
 
-        // Set values of the request
-        $request->MessageTime = Carbon::now()->format('Y-m-d\TH:i:sP');
-        $request->MessageReference = md5($this->getTransactionId());
-
-        $request->LanguageCode = $this->getLanguageCode();
-//        $request->CountryCode = 'BG';
-        $request->AWBNumber = $this->getParcelId();
-        $request->LevelOfDetails = 'ALL_CHECK_POINTS';
-        $request->PiecesEnabled = 'S';
-
-        return $request;
+        return $tracking;
     }
 
     /**

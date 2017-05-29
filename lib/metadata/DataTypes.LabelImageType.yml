@@ -1,0 +1,26 @@
+Dhl\DataTypes\LabelImageType:
+    properties:
+        outputFormat:
+            expose: true
+            access_type: public_method
+            serialized_name: OutputFormat
+            accessor:
+                getter: getOutputFormat
+                setter: setOutputFormat
+            type: string
+        outputImage:
+            expose: true
+            access_type: public_method
+            serialized_name: OutputImage
+            accessor:
+                getter: getOutputImage
+                setter: setOutputImage
+            type: \AnySimpleType
+        outputImageNPC:
+            expose: true
+            access_type: public_method
+            serialized_name: OutputImageNPC
+            accessor:
+                getter: getOutputImageNPC
+                setter: setOutputImageNPC
+            type: string

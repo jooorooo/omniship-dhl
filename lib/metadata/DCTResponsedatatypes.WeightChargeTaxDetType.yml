@@ -1,0 +1,34 @@
+Dhl\DCTResponsedatatypes\WeightChargeTaxDetType:
+    properties:
+        taxTypeRate:
+            expose: true
+            access_type: public_method
+            serialized_name: TaxTypeRate
+            accessor:
+                getter: getTaxTypeRate
+                setter: setTaxTypeRate
+            type: float
+        taxTypeCode:
+            expose: true
+            access_type: public_method
+            serialized_name: TaxTypeCode
+            accessor:
+                getter: getTaxTypeCode
+                setter: setTaxTypeCode
+            type: string
+        weightChargeTax:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightChargeTax
+            accessor:
+                getter: getWeightChargeTax
+                setter: setWeightChargeTax
+            type: float
+        baseAmt:
+            expose: true
+            access_type: public_method
+            serialized_name: BaseAmt
+            accessor:
+                getter: getBaseAmt
+                setter: setBaseAmt
+            type: float

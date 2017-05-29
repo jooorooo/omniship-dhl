@@ -1,0 +1,34 @@
+Dhl\DataTypes\QtdSInAdCurType:
+    properties:
+        currencyCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyCode
+            accessor:
+                getter: getCurrencyCode
+                setter: setCurrencyCode
+            type: string
+        currencyRoleTypeCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyRoleTypeCode
+            accessor:
+                getter: getCurrencyRoleTypeCode
+                setter: setCurrencyRoleTypeCode
+            type: string
+        packageCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: PackageCharge
+            accessor:
+                getter: getPackageCharge
+                setter: setPackageCharge
+            type: float
+        shippingCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: ShippingCharge
+            accessor:
+                getter: getShippingCharge
+                setter: setShippingCharge
+            type: float

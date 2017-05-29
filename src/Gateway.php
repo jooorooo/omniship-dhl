@@ -8,6 +8,7 @@
 
 namespace Omniship\Dhl;
 
+use Omniship\Dhl\Http\CancelBillOfLadingRequest;
 use Omniship\Dhl\Http\CreateBillOfLadingRequest;
 use Omniship\Dhl\Http\ShippingServicesRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
@@ -127,7 +128,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omniship\Common\ShippingServiceBag
+     * @return ShippingServicesRequest
      */
     public function getServices(array $parameters = []) {
         return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters);
@@ -135,7 +136,7 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omniship\Common\TrackingBag
+     * @return TrackingParcelRequest
      */
     public function trackingParcel(array $parameters = []) {
         return $this->createRequest(TrackingParcelRequest::class, $this->getParameters() + $parameters);
@@ -143,11 +144,22 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return \Omniship\Message\AbstractRequest
+     * @return CreateBillOfLadingRequest
      */
     public function createBillOfLading(array $parameters = []) {
         return $this->createRequest(CreateBillOfLadingRequest::class, $this->getParameters() + $parameters);
     }
+
+    /**
+     * @param $bol_id
+     * @param null $cancelComment
+     * @return CancelBillOfLadingRequest
+     */
+    public function cancelBillOfLading($bol_id, $cancelComment=null) {
+        $this->setBolId((float)$bol_id)->setCancelComment($cancelComment);
+        return $this->createRequest(CancelBillOfLadingRequest::class, $this->getParameters());
+    }
+
     /**
      * Supports Cash On Delivery
      *

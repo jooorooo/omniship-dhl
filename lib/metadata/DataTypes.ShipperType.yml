@@ -1,0 +1,125 @@
+Dhl\DataTypes\ShipperType:
+    properties:
+        shipperID:
+            expose: true
+            access_type: public_method
+            serialized_name: ShipperID
+            accessor:
+                getter: getShipperID
+                setter: setShipperID
+            type: string
+        companyName:
+            expose: true
+            access_type: public_method
+            serialized_name: CompanyName
+            accessor:
+                getter: getCompanyName
+                setter: setCompanyName
+            type: string
+        registeredAccount:
+            expose: true
+            access_type: public_method
+            serialized_name: RegisteredAccount
+            accessor:
+                getter: getRegisteredAccount
+                setter: setRegisteredAccount
+            type: integer
+        addressLine:
+            expose: true
+            access_type: public_method
+            serialized_name: AddressLine
+            accessor:
+                getter: getAddressLine
+                setter: setAddressLine
+            xml_list:
+                inline: true
+                entry_name: AddressLine
+            type: array<string>
+        city:
+            expose: true
+            access_type: public_method
+            serialized_name: City
+            accessor:
+                getter: getCity
+                setter: setCity
+            type: string
+        division:
+            expose: true
+            access_type: public_method
+            serialized_name: Division
+            accessor:
+                getter: getDivision
+                setter: setDivision
+            type: string
+        divisionCode:
+            expose: true
+            access_type: public_method
+            serialized_name: DivisionCode
+            accessor:
+                getter: getDivisionCode
+                setter: setDivisionCode
+            type: string
+        postalCode:
+            expose: true
+            access_type: public_method
+            serialized_name: PostalCode
+            accessor:
+                getter: getPostalCode
+                setter: setPostalCode
+            type: string
+        originServiceAreaCode:
+            expose: true
+            access_type: public_method
+            serialized_name: OriginServiceAreaCode
+            accessor:
+                getter: getOriginServiceAreaCode
+                setter: setOriginServiceAreaCode
+            type: string
+        originFacilityCode:
+            expose: true
+            access_type: public_method
+            serialized_name: OriginFacilityCode
+            accessor:
+                getter: getOriginFacilityCode
+                setter: setOriginFacilityCode
+            type: string
+        countryCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryCode
+            accessor:
+                getter: getCountryCode
+                setter: setCountryCode
+            type: string
+        countryName:
+            expose: true
+            access_type: public_method
+            serialized_name: CountryName
+            accessor:
+                getter: getCountryName
+                setter: setCountryName
+            type: string
+        federalTaxId:
+            expose: true
+            access_type: public_method
+            serialized_name: FederalTaxId
+            accessor:
+                getter: getFederalTaxId
+                setter: setFederalTaxId
+            type: string
+        stateTaxId:
+            expose: true
+            access_type: public_method
+            serialized_name: StateTaxId
+            accessor:
+                getter: getStateTaxId
+                setter: setStateTaxId
+            type: string
+        contact:
+            expose: true
+            access_type: public_method
+            serialized_name: Contact
+            accessor:
+                getter: getContact
+                setter: setContact
+            type: Dhl\DataTypes\ContactType

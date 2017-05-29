@@ -1,0 +1,32 @@
+Dhl\DCTResponsedatatypes\ProdType\VldSrvCombAType:
+    properties:
+        specialServiceType:
+            expose: true
+            access_type: public_method
+            serialized_name: SpecialServiceType
+            accessor:
+                getter: getSpecialServiceType
+                setter: setSpecialServiceType
+            type: string
+        localServiceType:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalServiceType
+            accessor:
+                getter: getLocalServiceType
+                setter: setLocalServiceType
+            xml_list:
+                inline: true
+                entry_name: LocalServiceType
+            type: array<string>
+        combRSrv:
+            expose: true
+            access_type: public_method
+            serialized_name: CombRSrv
+            accessor:
+                getter: getCombRSrv
+                setter: setCombRSrv
+            xml_list:
+                inline: true
+                entry_name: CombRSrv
+            type: array<Dhl\DCTResponsedatatypes\ProdType\VldSrvCombAType\CombRSrvAType>

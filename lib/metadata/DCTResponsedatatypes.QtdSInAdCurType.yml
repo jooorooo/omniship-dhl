@@ -1,0 +1,77 @@
+Dhl\DCTResponsedatatypes\QtdSInAdCurType:
+    properties:
+        customsValue:
+            expose: true
+            access_type: public_method
+            serialized_name: CustomsValue
+            accessor:
+                getter: getCustomsValue
+                setter: setCustomsValue
+            type: float
+        exchangeRate:
+            expose: true
+            access_type: public_method
+            serialized_name: ExchangeRate
+            accessor:
+                getter: getExchangeRate
+                setter: setExchangeRate
+            type: float
+        currencyCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyCode
+            accessor:
+                getter: getCurrencyCode
+                setter: setCurrencyCode
+            type: string
+        currencyRoleTypeCode:
+            expose: true
+            access_type: public_method
+            serialized_name: CurrencyRoleTypeCode
+            accessor:
+                getter: getCurrencyRoleTypeCode
+                setter: setCurrencyRoleTypeCode
+            type: string
+        weightCharge:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightCharge
+            accessor:
+                getter: getWeightCharge
+                setter: setWeightCharge
+            type: float
+        totalAmount:
+            expose: true
+            access_type: public_method
+            serialized_name: TotalAmount
+            accessor:
+                getter: getTotalAmount
+                setter: setTotalAmount
+            type: float
+        totalTaxAmount:
+            expose: true
+            access_type: public_method
+            serialized_name: TotalTaxAmount
+            accessor:
+                getter: getTotalTaxAmount
+                setter: setTotalTaxAmount
+            type: float
+        weightChargeTax:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightChargeTax
+            accessor:
+                getter: getWeightChargeTax
+                setter: setWeightChargeTax
+            type: float
+        weightChargeTaxDet:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightChargeTaxDet
+            accessor:
+                getter: getWeightChargeTaxDet
+                setter: setWeightChargeTaxDet
+            xml_list:
+                inline: true
+                entry_name: WeightChargeTaxDet
+            type: array<Dhl\DCTResponsedatatypes\WeightChargeTaxDetType>

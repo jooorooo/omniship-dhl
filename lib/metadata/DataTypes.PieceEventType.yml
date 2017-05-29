@@ -1,0 +1,42 @@
+Dhl\DataTypes\PieceEventType:
+    properties:
+        date:
+            expose: true
+            access_type: public_method
+            serialized_name: Date
+            accessor:
+                getter: getDate
+                setter: setDate
+            type: 'DateTime<''Y-m-d''>'
+        time:
+            expose: true
+            access_type: public_method
+            serialized_name: Time
+            accessor:
+                getter: getTime
+                setter: setTime
+            type: GoetasWebservices\Xsd\XsdToPhp\XMLSchema\Time
+        serviceEvent:
+            expose: true
+            access_type: public_method
+            serialized_name: ServiceEvent
+            accessor:
+                getter: getServiceEvent
+                setter: setServiceEvent
+            type: Dhl\DataTypes\ServiceEventType
+        signatory:
+            expose: true
+            access_type: public_method
+            serialized_name: Signatory
+            accessor:
+                getter: getSignatory
+                setter: setSignatory
+            type: string
+        serviceArea:
+            expose: true
+            access_type: public_method
+            serialized_name: ServiceArea
+            accessor:
+                getter: getServiceArea
+                setter: setServiceArea
+            type: Dhl\DataTypes\ServiceAreaType

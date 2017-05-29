@@ -1,0 +1,18 @@
+Dhl\DataTypes\ExportLineItemType\LicenseAType:
+    properties:
+        licenseNumber:
+            expose: true
+            access_type: public_method
+            serialized_name: LicenseNumber
+            accessor:
+                getter: getLicenseNumber
+                setter: setLicenseNumber
+            type: string
+        expiryDate:
+            expose: true
+            access_type: public_method
+            serialized_name: ExpiryDate
+            accessor:
+                getter: getExpiryDate
+                setter: setExpiryDate
+            type: 'DateTime<''Y-m-d''>'

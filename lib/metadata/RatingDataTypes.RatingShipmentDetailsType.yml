@@ -1,0 +1,53 @@
+Dhl\RatingDataTypes\RatingShipmentDetailsType:
+    properties:
+        numberOfPieces:
+            expose: true
+            access_type: public_method
+            serialized_name: NumberOfPieces
+            accessor:
+                getter: getNumberOfPieces
+                setter: setNumberOfPieces
+            type: integer
+        pieces:
+            expose: true
+            access_type: public_method
+            serialized_name: Pieces
+            accessor:
+                getter: getPieces
+                setter: setPieces
+            type: array<Dhl\DataTypes\PieceType>
+            xml_list:
+                inline: false
+                entry_name: Piece
+        weightUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: WeightUnit
+            accessor:
+                getter: getWeightUnit
+                setter: setWeightUnit
+            type: string
+        dimensionUnit:
+            expose: true
+            access_type: public_method
+            serialized_name: DimensionUnit
+            accessor:
+                getter: getDimensionUnit
+                setter: setDimensionUnit
+            type: string
+        weight:
+            expose: true
+            access_type: public_method
+            serialized_name: Weight
+            accessor:
+                getter: getWeight
+                setter: setWeight
+            type: float
+        productCode:
+            expose: true
+            access_type: public_method
+            serialized_name: ProductCode
+            accessor:
+                getter: getProductCode
+                setter: setProductCode
+            type: string

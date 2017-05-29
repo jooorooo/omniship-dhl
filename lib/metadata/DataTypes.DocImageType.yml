@@ -1,0 +1,26 @@
+Dhl\DataTypes\DocImageType:
+    properties:
+        type:
+            expose: true
+            access_type: public_method
+            serialized_name: Type
+            accessor:
+                getter: getType
+                setter: setType
+            type: string
+        image:
+            expose: true
+            access_type: public_method
+            serialized_name: Image
+            accessor:
+                getter: getImage
+                setter: setImage
+            type: \AnySimpleType
+        imageFormat:
+            expose: true
+            access_type: public_method
+            serialized_name: ImageFormat
+            accessor:
+                getter: getImageFormat
+                setter: setImageFormat
+            type: string

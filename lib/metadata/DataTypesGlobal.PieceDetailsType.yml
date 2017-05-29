@@ -1,0 +1,58 @@
+Dhl\DataTypesGlobal\PieceDetailsType:
+    properties:
+        pieceID:
+            expose: true
+            access_type: public_method
+            serialized_name: PieceID
+            accessor:
+                getter: getPieceID
+                setter: setPieceID
+            type: string
+        packageType:
+            expose: true
+            access_type: public_method
+            serialized_name: PackageType
+            accessor:
+                getter: getPackageType
+                setter: setPackageType
+            type: string
+        weight:
+            expose: true
+            access_type: public_method
+            serialized_name: Weight
+            accessor:
+                getter: getWeight
+                setter: setWeight
+            type: float
+        dimWeight:
+            expose: true
+            access_type: public_method
+            serialized_name: DimWeight
+            accessor:
+                getter: getDimWeight
+                setter: setDimWeight
+            type: string
+        width:
+            expose: true
+            access_type: public_method
+            serialized_name: Width
+            accessor:
+                getter: getWidth
+                setter: setWidth
+            type: integer
+        height:
+            expose: true
+            access_type: public_method
+            serialized_name: Height
+            accessor:
+                getter: getHeight
+                setter: setHeight
+            type: integer
+        depth:
+            expose: true
+            access_type: public_method
+            serialized_name: Depth
+            accessor:
+                getter: getDepth
+                setter: setDepth
+            type: integer

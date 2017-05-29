@@ -1,0 +1,18 @@
+Dhl\DCTResponsedatatypes\DestSvcAreaType:
+    properties:
+        facilityCode:
+            expose: true
+            access_type: public_method
+            serialized_name: FacilityCode
+            accessor:
+                getter: getFacilityCode
+                setter: setFacilityCode
+            type: string
+        serviceAreaCode:
+            expose: true
+            access_type: public_method
+            serialized_name: ServiceAreaCode
+            accessor:
+                getter: getServiceAreaCode
+                setter: setServiceAreaCode
+            type: string

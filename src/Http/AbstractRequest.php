@@ -8,6 +8,9 @@
 
 namespace Omniship\Dhl\Http;
 
+use Carbon\Carbon;
+use Dhl\DataTypes\RequestType;
+use Dhl\DataTypes\ServiceHeaderType;
 use Omniship\Exceptions\InvalidResponseException;
 use Omniship\Message\AbstractRequest AS BaseAbstractRequest;
 
@@ -90,6 +93,21 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     public function getDutyAccountNumber() {
         return $this->getParameter('duty_account_number');
+    }
+
+    /**
+     * @return RequestType
+     */
+    public function getHeaderRequestType() {
+        $headers = new ServiceHeaderType();
+        $headers->setSiteID($this->getUsername());
+        $headers->setPassword($this->getPassword());
+        $headers->setMessageReference(md5($this->getTransactionId()));
+        $headers->setMessageTime($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
+
+        $request = new RequestType();
+        $request->setServiceHeader($headers);
+        return $request;
     }
 
     public function sendData($data) {

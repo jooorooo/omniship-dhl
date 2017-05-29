@@ -1,0 +1,58 @@
+Dhl\DCTResponsedatatypes\SrvCombType:
+    properties:
+        globalServiceName:
+            expose: true
+            access_type: public_method
+            serialized_name: GlobalServiceName
+            accessor:
+                getter: getGlobalServiceName
+                setter: setGlobalServiceName
+            type: string
+        globalServiceCode:
+            expose: true
+            access_type: public_method
+            serialized_name: GlobalServiceCode
+            accessor:
+                getter: getGlobalServiceCode
+                setter: setGlobalServiceCode
+            type: string
+        localServiceCode:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalServiceCode
+            accessor:
+                getter: getLocalServiceCode
+                setter: setLocalServiceCode
+            type: string
+        localServiceTypeName:
+            expose: true
+            access_type: public_method
+            serialized_name: LocalServiceTypeName
+            accessor:
+                getter: getLocalServiceTypeName
+                setter: setLocalServiceTypeName
+            type: string
+        chargeCodeType:
+            expose: true
+            access_type: public_method
+            serialized_name: ChargeCodeType
+            accessor:
+                getter: getChargeCodeType
+                setter: setChargeCodeType
+            type: string
+        sOfferedCustAgreement:
+            expose: true
+            access_type: public_method
+            serialized_name: SOfferedCustAgreement
+            accessor:
+                getter: getSOfferedCustAgreement
+                setter: setSOfferedCustAgreement
+            type: string
+        srvComb:
+            expose: true
+            access_type: public_method
+            serialized_name: SrvComb
+            accessor:
+                getter: getSrvComb
+                setter: setSrvComb
+            type: Dhl\DCTResponsedatatypes\SrvCombType\SrvCombAType
