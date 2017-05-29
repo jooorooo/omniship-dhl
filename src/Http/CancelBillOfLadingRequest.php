@@ -8,13 +8,22 @@
 
 namespace Omniship\Dhl\Http;
 
+use Carbon\Carbon;
+use Dhl\CancelPURequest;
+
 class CancelBillOfLadingRequest extends AbstractRequest
 {
     /**
-     * @return string|float
+     * @return CancelPURequest
      */
     public function getData() {
-        return $this->getBolId();
+        $cancel_request = new CancelPURequest();
+        $cancel_request->setRequest($this->getHeaderRequestTypeGlobal());
+        $cancel_request->setCancelTime(Carbon::now());
+        $cancel_request->setConfirmationNumber($this->getBolId());
+        $cancel_request->setReason('007');
+echo htmlspecialchars($cancel_request->toXML()); exit;
+        return $cancel_request;
     }
 
     /**
