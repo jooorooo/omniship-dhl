@@ -14,7 +14,7 @@ class CancelPURequest
     /**
      * @property float $schemaVersion
      */
-    private $schemaVersion = '1.0';
+    private $schemaVersion = '2.0';
 
     /**
      * @property \Dhl\DataTypesGlobal\RequestType $request

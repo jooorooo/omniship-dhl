@@ -19,10 +19,14 @@ class CancelBillOfLadingRequest extends AbstractRequest
     public function getData() {
         $cancel_request = new CancelPURequest();
         $cancel_request->setRequest($this->getHeaderRequestTypeGlobal());
-        $cancel_request->setCancelTime(Carbon::now());
+        $cancel_request->setRegionCode('AM');
         $cancel_request->setConfirmationNumber($this->getBolId());
+        $cancel_request->setRequestorName('simexis');
+        $cancel_request->setCountryCode('CA');
+        $cancel_request->setPickupDate(Carbon::now());
         $cancel_request->setReason('007');
-echo htmlspecialchars($cancel_request->toXML()); exit;
+        $cancel_request->setCancelTime(Carbon::now()->format('H:i'));
+//echo htmlspecialchars($cancel_request->toXML()); exit;
         return $cancel_request;
     }
 
