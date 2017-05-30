@@ -27,6 +27,8 @@ class AbstractResponse extends BaseAbstractResponse
             return preg_replace('~([\s]{2,})~', ' ', str_replace(["\n\r", "\r\n", "\r", "\n"], ' ', (string)$this->getXml()->GetQuoteResponse->Note->Condition->ConditionData));
         } elseif(!empty($this->getXml()->Response->Status->Condition)) {
             return preg_replace('~([\s]{2,})~', ' ', str_replace(["\n\r", "\r\n", "\r", "\n"], ' ', (string)$this->getXml()->Response->Status->Condition->ConditionData));
+        } elseif(!empty($this->getXml()->AWBInfo->Status->Condition)) {
+            return preg_replace('~([\s]{2,})~', ' ', str_replace(["\n\r", "\r\n", "\r", "\n"], ' ', (string)$this->getXml()->AWBInfo->Status->Condition->ConditionData));
         }
         return null;
     }
@@ -40,6 +42,8 @@ class AbstractResponse extends BaseAbstractResponse
             return (string)$this->getXml()->GetQuoteResponse->Note->Condition->ConditionCode;
         } elseif(!empty($this->getXml()->Response->Status->Condition)) {
             return (string)$this->getXml()->Response->Status->Condition->ConditionCode;
+        } elseif(!empty($this->getXml()->AWBInfo->Status->Condition)) {
+            return (string)$this->getXml()->AWBInfo->Status->Condition->ConditionCode;
         }
         return null;
     }

@@ -10,6 +10,7 @@ namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
 use Omniship\Common\ShippingServiceBag;
+use Omniship\Dhl\Helper\Errors;
 
 class ShippingServicesResponse extends AbstractResponse
 {
@@ -40,7 +41,8 @@ class ShippingServicesResponse extends AbstractResponse
                         'delivery_time' => $quote['DeliveryTime'] ? Carbon::createFromFormat($this->parseTime($quote['DeliveryTime']), $quote['DeliveryTime'], $this->request->getReceiverTimeZone()) : null,
                         'currency' => $quote['CurrencyCode'],
                         'tax' => $quote['TotalTaxAmount'],
-                        'insurance' => 0
+                        'insurance' => 0,
+                        'exchange_rate' => $quote['ExchangeRate']
                     ]);
                 }
             }
@@ -62,5 +64,17 @@ class ShippingServicesResponse extends AbstractResponse
             ]);
         }
         return '\P\TH\Hi\M';
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMessage()
+    {
+        $code = parent::getCode();
+        if($code && $error = Errors::capabilityAndQuoteService($code)) {
+            return htmlspecialchars(!$this->getRequest()->getTestMode() && $error['Meaning'] ? $error['Meaning'] : $error['Message'], ENT_QUOTES, 'utf-8');
+        }
+        return parent::getMessage();
     }
 }

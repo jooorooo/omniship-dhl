@@ -31,10 +31,10 @@ class ShippingServicesRequest extends AbstractRequest
 
         $quote->setFrom($this->_getFrom());
         $quote->setTo($this->_getTo());
+        $quote->setBkgDetails($this->_getBkgDetails());
         if(!is_null($dutiable = $this->_getDutiable())) {
             $quote->setDutiable($dutiable);
         }
-        $quote->setBkgDetails($this->_getBkgDetails());
 
         $request = new DCTRequest();
         $request->setGetQuote($quote);
@@ -56,13 +56,16 @@ class ShippingServicesRequest extends AbstractRequest
      */
     protected function _getFrom() {
         $request = new DCTFromType();
-        if(!is_null($country = $this->getSenderAddress()->getCountry())) {
+        $address = $this->getSenderAddress();
+        if($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
-        if(!is_null($city = $this->getSenderAddress()->getCity())) {
+        if($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
-        $request->setPostalcode($this->getSenderAddress()->getPostCode());
+        if($address) {
+            $request->setPostalcode($address->getPostCode());
+        }
 //        $request->setSuburb();
 //        $request->setVatNo();
         return $request;
@@ -94,7 +97,7 @@ class ShippingServicesRequest extends AbstractRequest
         if($da && $da > 0) {
             $request = new DCTDutiableType();
             $request->setDeclaredCurrency($this->getDeclaredCurrency());
-            $request->setDeclaredValue($this->getDeclaredAmount());
+            $request->setDeclaredValue($da);
         }
         return $request;
     }
@@ -149,9 +152,16 @@ class ShippingServicesRequest extends AbstractRequest
 //        $request->setReadyTimeGMTOffset('+01:00');
         $request->setDimensionUnit($this->getDimensionUnit()); //IN, CM
         $request->setWeightUnit($this->getWeightUnit()); //KG, LB
-        $request->setIsDutiable($this->getDutiable() ? 'Y' : 'N');
 
-        $request->setPaymentCountryCode($this->getReceiverAddress()->getCountry()->getIso2());
+        $sender_address = $this->getReceiverAddress();
+        $request->setIsDutiable('N');
+        if($sender_address && $country = $sender_address->getCountry()) {
+            $request->setPaymentCountryCode($country->getIso2());
+            $receiver_address = $this->getReceiverAddress();
+            if($receiver_address && $rcountry = $receiver_address->getCountry()) {
+                $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+            }
+        }
 
         if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
 //            $request->setCODAccountNumber($this->getBillingAccountNumber());

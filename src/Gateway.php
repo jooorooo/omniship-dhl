@@ -8,16 +8,17 @@
 
 namespace Omniship\Dhl;
 
+use Carbon\Carbon;
+use Omniship\Common\Address;
 use Omniship\Dhl\Http\CancelBillOfLadingRequest;
 use Omniship\Dhl\Http\CreateBillOfLadingRequest;
 use Omniship\Dhl\Http\ShippingServicesRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
+use Omniship\Dhl\Http\ValidateAddressRequest;
 
 class Gateway extends AbstractGateway
 {
-
-    private $message_reference;
 
     private $name = 'Dhl';
 
@@ -158,6 +159,25 @@ class Gateway extends AbstractGateway
     public function cancelBillOfLading($bol_id, $cancelComment=null) {
         $this->setBolId((float)$bol_id)->setCancelComment($cancelComment);
         return $this->createRequest(CancelBillOfLadingRequest::class, $this->getParameters());
+    }
+
+    /**
+     * @param $bol_id
+     * @param null|Carbon $date
+     * @return RequestCourierRequest
+     */
+    public function requestCourier($bol_id, Carbon $date = null)
+    {
+        return $this->createRequest(RequestCourierRequest::class, $this->setBolId(array_map('floatval', (array)$bol_id))->setDate($date)->getParameters());
+    }
+
+    /**
+     * @param Address $address
+     * @return ValidateAddressRequest
+     */
+    public function validateAddress(Address $address)
+    {
+        return $this->createRequest(ValidateAddressRequest::class, $this->setAddress($address)->getParameters());
     }
 
     /**

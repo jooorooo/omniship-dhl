@@ -13,6 +13,7 @@ use Dhl\Entity\AM\TrackingResponse;
 use Omniship\Common\Component;
 use Omniship\Common\EventBag;
 use Omniship\Common\TrackingBag;
+use Omniship\Dhl\Helper\Errors;
 
 class TrackingParcelResponse extends AbstractResponse
 {

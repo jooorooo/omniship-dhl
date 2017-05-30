@@ -3,11 +3,11 @@
 return array (
   0 => 
   array (
-    'GlobalProductCode' => NULL,
+    'GlobalProductCode' => '0',
     'GlobalProductName' => 'LOGISTICS SERVICES',
     'ProductContentCode' => 'LOG',
     'DocNonDocIndicator' => 'A-Not Applicable',
-    'ServiceDefaultDeliveryTime' => NULL,
+    'ServiceDefaultDeliveryTime' => null,
   ),
   1 => 
   array (
@@ -79,7 +79,7 @@ return array (
     'GlobalProductName' => 'AUTO REVERSALS',
     'ProductContentCode' => 'N/A',
     'DocNonDocIndicator' => 'A-Not Applicable',
-    'ServiceDefaultDeliveryTime' => NULL,
+    'ServiceDefaultDeliveryTime' => null,
   ),
   10 => 
   array (
@@ -279,6 +279,6 @@ return array (
     'GlobalProductName' => 'Destination Charges',
     'ProductContentCode' => 'N/A',
     'DocNonDocIndicator' => 'A-Not Applicable',
-    'ServiceDefaultDeliveryTime' => NULL,
+    'ServiceDefaultDeliveryTime' => null,
   ),
 );
