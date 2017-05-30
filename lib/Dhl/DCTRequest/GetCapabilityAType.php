@@ -1,12 +1,15 @@
 <?php
 
 namespace Dhl\DCTRequest;
+use Dhl\Traits\Request;
 
 /**
  * Class representing GetCapabilityAType
  */
 class GetCapabilityAType
 {
+
+    use Request;
 
     /**
      * @property \Dhl\DataTypes\RequestType $request

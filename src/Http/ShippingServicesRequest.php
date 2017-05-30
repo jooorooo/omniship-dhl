@@ -38,7 +38,7 @@ class ShippingServicesRequest extends AbstractRequest
 
         $request = new DCTRequest();
         $request->setGetQuote($quote);
-        
+
         return $request;
     }
 
@@ -79,7 +79,7 @@ class ShippingServicesRequest extends AbstractRequest
         if(!is_null($city = $this->getReceiverAddress()->getCity())) {
             $request->setCity($city->getName());
         }
-        $request->setPostalcode($this->getSenderAddress()->getPostCode());
+        $request->setPostalcode($this->getReceiverAddress()->getPostCode());
 //        $request->setSuburb();
 //        $request->setVatNo();
         return $request;
