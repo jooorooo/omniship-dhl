@@ -13,11 +13,11 @@ use Dhl\DCTRequestdatatypes\PieceType;
 use Dhl\DCTRequest;
 use Dhl\DCTRequest\GetQuoteAType;
 use Dhl\DCTRequestdatatypes\BkgDetailsType;
-use Dhl\DCTRequestdatatypes\DCTDutiableType;
 use Dhl\DCTRequestdatatypes\DCTFromType;
 use Dhl\DCTRequestdatatypes\DCTToType;
 use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
 use Dhl\DCTRequestdatatypes\QtdShpType;
+use Dhl\RouteRequest;
 
 class ValidateAddressRequest extends AbstractRequest
 {

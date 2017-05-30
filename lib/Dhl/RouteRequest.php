@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl;
+use Dhl\Traits\Request;
 
 /**
  * Class representing RouteRequest
@@ -8,10 +9,12 @@ namespace Dhl;
 class RouteRequest
 {
 
+    use Request;
+
     /**
      * @property float $schemaVersion
      */
-    private $schemaVersion = null;
+    private $schemaVersion = '1.0';
 
     /**
      * @property \Dhl\DataTypesGlobal\RequestType $request
