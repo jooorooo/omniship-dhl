@@ -29,7 +29,7 @@ class ShippingServicesResponse extends AbstractResponse
             foreach($bkg_details->QtdShp AS $quote) {
                 $quote = json_decode(json_encode($quote), true);
                 if(!empty($quote['ShippingCharge'])) {
-                    $result->add([
+                    $result->push([
                         'id' => $quote['GlobalProductCode'],
                         'name' => $quote['ProductShortName'],
                         'description' => $quote['LocalProductName'],

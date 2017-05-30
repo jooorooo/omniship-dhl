@@ -35,7 +35,7 @@ class TrackingParcelResponse extends AbstractResponse
         if(!empty($this->getXml()->AWBInfo)) {
             foreach($this->getXml()->AWBInfo AS $quote) {
                 $quote = json_decode(json_encode($shipment_info = $quote->ShipmentInfo), true);
-                $result->add([
+                $result->push([
                     'id' => md5(json_encode([$quote['OriginServiceArea'], $quote['DestinationServiceArea'], $quote['ShipperName'], $quote['ShipmentDate']])),
                     'name' => $quote['OriginServiceArea']['Description'],
                     'events' => $this->_getEvents($shipment_info),
@@ -63,7 +63,7 @@ class TrackingParcelResponse extends AbstractResponse
                 if($code == 'OK') {
                     $message .= ' ' . (string)$xml->ConsigneeName;
                 }
-                $result->add(new Component([
+                $result->push(new Component([
                     'id' => $code,
                     'name' => $message,
                 ]));

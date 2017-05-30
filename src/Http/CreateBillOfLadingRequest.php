@@ -160,7 +160,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         /** @var $items ItemBag */
         $items = $this->getItems();
-        if($items) {
+        if($items->count()) {
             $total = 0;
             foreach($items->all() as $item) {
                 for($i=1; $i<=$item->getQuantity(); $i++) {
