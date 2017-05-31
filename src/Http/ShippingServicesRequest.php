@@ -60,14 +60,21 @@ class ShippingServicesRequest extends AbstractRequest
         if($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
+        //Required for countries where DHL has suburb level capability variation. Please refer to the Reference Data (DHL Country).
+        if($address && !is_null($state = $address->getState())) {
+            $request->setSuburb($state->getName());
+        }
         if($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
         if($address) {
             $request->setPostalcode($address->getPostCode());
         }
-//        $request->setSuburb();
-//        $request->setVatNo();
+
+        //Shipper VAT Number is required for Brazil country with Brazil tax breakdown pricing in Quote service.
+        if(!is_null($vat = $this->getOtherParameters('sender_vat'))) {
+            $request->setVatNo($vat);
+        }
         return $request;
     }
 
@@ -76,15 +83,22 @@ class ShippingServicesRequest extends AbstractRequest
      */
     protected function _getTo() {
         $request = new DCTToType();
-        if(!is_null($country = $this->getReceiverAddress()->getCountry())) {
+        $address = $this->getReceiverAddress();
+        if($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
-        if(!is_null($city = $this->getReceiverAddress()->getCity())) {
+        //Required for countries where DHL has suburb level capability variation. Please refer to the Reference Data (DHL Country).
+        if($address && !is_null($state = $address->getState())) {
+            $request->setSuburb($state->getName());
+        }
+        if($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
-        $request->setPostalcode($this->getReceiverAddress()->getPostCode());
-//        $request->setSuburb();
-//        $request->setVatNo();
+        if($address) {
+            $request->setPostalcode($address->getPostCode());
+        }
+//        $request->setVatNo('');
+
         return $request;
     }
 
@@ -109,6 +123,7 @@ class ShippingServicesRequest extends AbstractRequest
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
+        $request->addToNumberOfPieces($this->getNumberOfPieces());
         /** @var $items ItemBag */
         $items = $this->getItems();
         if($items->count()) {
@@ -127,7 +142,6 @@ class ShippingServicesRequest extends AbstractRequest
                     $total++;
                 }
             }
-            $request->setNumberOfPieces([$total]);
         }
 
         /*
@@ -158,13 +172,13 @@ class ShippingServicesRequest extends AbstractRequest
         if($sender_address && $country = $sender_address->getCountry()) {
             $request->setPaymentCountryCode($country->getIso2());
             $receiver_address = $this->getReceiverAddress();
-            if($receiver_address && $rcountry = $receiver_address->getCountry()) {
+            if(!$this->getIsDocuments() && $receiver_address && $rcountry = $receiver_address->getCountry()) {
                 $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
             }
         }
 
         if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
-//            $request->setCODAccountNumber($this->getBillingAccountNumber());
+            $request->setCODAccountNumber($this->getOtherParameters('cod_account_number'));
             $request->setCODAmount($cod);
             $request->setCODCurrencyCode($this->getCashOnDeliveryCurrency());
         }

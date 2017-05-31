@@ -16,10 +16,8 @@ use Dhl\DataTypesGlobal\CustomerLogoType;
 use Dhl\DataTypesGlobal\DutiableType;
 use Dhl\DataTypesGlobal\LabelType;
 use Dhl\DataTypesGlobal\PieceType;
-use Dhl\DataTypesGlobal\ReferenceType;
 use Dhl\DataTypesGlobal\ShipperType;
 use Dhl\DataTypesGlobal\SpecialServiceType;
-use Dhl\Entity\AM\GetQuote;
 use Dhl\DataTypesGlobal\ContactType;
 use Dhl\DataTypesGlobal\ShipmentDetailsType;
 use Dhl\ShipmentRequest;
@@ -28,13 +26,13 @@ use Omniship\Common\ItemBag;
 class CreateBillOfLadingRequest extends AbstractRequest
 {
     /**
-     * @return GetQuote
+     * @return ShipmentRequest
      */
     public function getData() {
         $shipment_request = new ShipmentRequest();
         $shipment_request->setRequest($this->getHeaderRequestTypeGlobal());
 
-        $shipment_request->setRegionCode('AM');
+        $shipment_request->setRegionCode($this->getOtherParameters('region'));
         $shipment_request->setRequestedPickupTime('Y');
         $shipment_request->setNewShipper('Y');
         $shipment_request->setLanguageCode($this->getLanguageCode());
@@ -55,8 +53,8 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
 //        Customer sends shipment validation request message for Baby Shipment with relevant shipment information and the below information
 //        $reference_type = new ReferenceType();
-//        $reference_type->setReferenceID($this->getOtherParameters('contents_text'));
-//        $reference_type->setReferenceType($this->getOtherParameters('packing_type'));
+//        $reference_type->setReferenceID($this->getOtherParameters('reference_id'));
+//        $reference_type->setReferenceType($this->getOtherParameters('reference_type'));
 //        $shipment_request->setReference([$reference_type]);
 
         $shipment_request->setShipmentDetails($this->_getShipmentDetails());
@@ -161,39 +159,40 @@ class CreateBillOfLadingRequest extends AbstractRequest
         /** @var $items ItemBag */
         $items = $this->getItems();
         if($items->count()) {
-            $total = 0;
             foreach($items->all() as $item) {
-                for($i=1; $i<=$item->getQuantity(); $i++) {
-                    $piece = new PieceType();
-                    $piece->setPieceID($item->getId());
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->setHeight($item->getHeight());
-                        $piece->setDepth($item->getDepth());
-                        $piece->setWidth($item->getWidth());
-                    }
-                    $piece->setWeight($item->getWeight());
-                    $request->addToPieces($piece);
-                    $total++;
+                $piece = new PieceType();
+                $piece->setPieceID($item->getId());
+                if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                    $piece->setHeight($item->getHeight());
+                    $piece->setDepth($item->getDepth());
+                    $piece->setWidth($item->getWidth());
                 }
+                $piece->setWeight($item->getWeight() * $item->getQuantity());
+                $request->addToPieces($piece);
             }
-            $request->setNumberOfPieces($total);
         }
 
+        $request->setNumberOfPieces($this->getNumberOfPieces());
         $request->setWeight($this->getWeight());
         $request->setWeightUnit($this->getWeightUnit() == 'KG' ? 'K' : 'L');
         $request->setGlobalProductCode($this->getServiceId()); //service GlobalProductCode
         $request->setLocalProductCode($this->getServiceId()); //service LocalProductCode
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now() );
-        $request->setContents($this->getOtherParameters('contents_text'));
+        $request->setContents($this->getContent());
         $request->setDoorTo('DD');
         $request->setDimensionUnit($this->getDimensionUnit() == 'CM' ? 'C' : 'I');
         if(($ia = $this->getInsuranceAmount()) > 0) {
             $request->setInsuredAmount($ia);
         }
 
-        $request->setPackageType('YP');
-        $request->setIsDutiable($this->getDutiable() ? 'Y' : 'N');
+        $request->setPackageType($this->getPackageType() ? : 'YP');
         $request->setCurrencyCode($this->getCurrency());
+        $sender_address = $this->getReceiverAddress();
+        $receiver_address = $this->getReceiverAddress();
+        $request->setIsDutiable('N');
+        if(!$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
+            $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+        }
 
         return $request;
     }

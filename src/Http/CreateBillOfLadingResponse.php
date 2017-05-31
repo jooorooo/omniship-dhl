@@ -8,7 +8,7 @@
 
 namespace Omniship\Dhl\Http;
 
-use Dhl\Entity\GB\ShipmentResponse;
+use SimpleXMLElement;
 use Omniship\Common\Bill\Create;
 
 class CreateBillOfLadingResponse extends AbstractResponse
@@ -20,15 +20,15 @@ class CreateBillOfLadingResponse extends AbstractResponse
     public function getData()
     {
         $result = new Create();
-        /** @var $xml ShipmentResponse */
+        /** @var $xml SimpleXMLElement */
         $xml = $this->getXml();
-        if(!is_null($this->getCode()) || !empty($xml->Note->ActionNote) && (string)$xml->Note->ActionNote != 'Success') {
+        if(!is_null($this->getCode()) || (!empty($xml->Note) && !empty($xml->Note->ActionNote) && (string)$xml->Note->ActionNote != 'Success')) {
             return $result;
         }
 
         $result->setBolId($xml->AirwayBillNumber);
         $result->setBillOfLadingType($result::PDF);
-        $result->setBillOfLadingSource($xml->LabelImage->OutputImage);
+        $result->setBillOfLadingSource((string)$xml->LabelImage->OutputImage);
         $result->setEstimatedDeliveryDate(null);
         $result->setPickupDate($this->getRequest()->getTakingDate());
         $result->setTotal(!empty($xml->ShippingCharge) ? (float)$xml->ShippingCharge : null);

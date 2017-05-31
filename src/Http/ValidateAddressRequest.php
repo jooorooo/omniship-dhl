@@ -15,9 +15,6 @@ use Dhl\DCTRequest\GetQuoteAType;
 use Dhl\DCTRequestdatatypes\BkgDetailsType;
 use Dhl\DCTRequestdatatypes\DCTFromType;
 use Dhl\DCTRequestdatatypes\DCTToType;
-use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
-use Dhl\DCTRequestdatatypes\QtdShpType;
-use Dhl\RouteRequest;
 
 class ValidateAddressRequest extends AbstractRequest
 {
@@ -67,6 +64,10 @@ class ValidateAddressRequest extends AbstractRequest
         if($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
+        //Required for countries where DHL has suburb level capability variation. Please refer to the Reference Data (DHL Country).
+        if($address && !is_null($state = $address->getState())) {
+            $request->setSuburb($state->getName());
+        }
         if($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
@@ -83,18 +84,8 @@ class ValidateAddressRequest extends AbstractRequest
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
-        $piece = new PieceType();
-        $piece->setPieceID(1);
-        $piece->setWeight(0.1);
-        $request->addToPieces($piece);
-        $request->setNumberOfPieces([1]);
-
-        $address = $this->getAddress();
-        $dimension_unit = 'CM';
-        $weight_unit = 'KG';
-
-        $request->setDimensionUnit($dimension_unit); //IN, CM
-        $request->setWeightUnit($weight_unit); //KG, LB
+        $request->setDimensionUnit($this->findCountryData('DimensionalUnit')); //IN, CM
+        $request->setWeightUnit($this->findCountryData('WeightUnit')); //KG, LB
 
         /*
          * Time when the shipment can
@@ -115,18 +106,10 @@ class ValidateAddressRequest extends AbstractRequest
          */
         $request->setReadyTime(new \DateInterval('PT18H21M'));
 
+        $address = $this->getAddress();
         if($address && $address->getCountry()) {
             $request->setPaymentCountryCode($address->getCountry()->getIso2());
         }
-
-        // Request Paperless trade
-        $qtd_shp_ex_chrg = new QtdShpExChrgType();
-        $qtd_shp_ex_chrg->setSpecialServiceType('WY');
-
-        $qtd_shp = new QtdShpType();
-        $qtd_shp->setQtdShpExChrg([$qtd_shp_ex_chrg]);
-
-        $request->setQtdShp([$qtd_shp]);
 
         return $request;
     }
