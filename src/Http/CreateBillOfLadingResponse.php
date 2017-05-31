@@ -26,12 +26,13 @@ class CreateBillOfLadingResponse extends AbstractResponse
             return $result;
         }
 
-        $result->setBolId($xml->AirwayBillNumber);
+        $result->setBolId((string)$xml->AirwayBillNumber);
         $result->setBillOfLadingType($result::PDF);
         $result->setBillOfLadingSource((string)$xml->LabelImage->OutputImage);
         $result->setEstimatedDeliveryDate(null);
         $result->setPickupDate($this->getRequest()->getTakingDate());
         $result->setTotal(!empty($xml->ShippingCharge) ? (float)$xml->ShippingCharge : null);
+        $result->setCurrency((string)$xml->CurrencyCode);
 
         return $result;
     }
