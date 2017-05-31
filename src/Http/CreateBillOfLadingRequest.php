@@ -28,7 +28,8 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return ShipmentRequest
      */
-    public function getData() {
+    public function getData()
+    {
         $shipment_request = new ShipmentRequest();
         $shipment_request->setRequest($this->getHeaderRequestTypeGlobal());
 
@@ -47,7 +48,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $commodity_type->setCommodityName('cn');
         $shipment_request->setCommodity([$commodity_type]);
 
-        if(!is_null($dutiable = $this->_getDutiable())) {
+        if (!is_null($dutiable = $this->_getDutiable())) {
             $shipment_request->setDutiable($dutiable);
         }
 
@@ -89,7 +90,8 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return BillingType
      */
-    protected function _getBilling() {
+    protected function _getBilling()
+    {
         $request = new BillingType();
         $request->setShipperAccountNumber($this->getShipperAccountNumber());
         $request->setShippingPaymentType('S');
@@ -102,12 +104,13 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return ConsigneeType
      */
-    protected function _getConsignee() {
+    protected function _getConsignee()
+    {
         $request = new ConsigneeType();
 
         $receiver_address = $this->getReceiverAddress();
         $country = $receiver_address->getCountry();
-        $request->setCompanyName($receiver_address->getCompanyName() ? : ($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName()));
+        $request->setCompanyName($receiver_address->getCompanyName() ?: ($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName()));
         $request->addToAddressLine($receiver_address->getAddress1());
         $request->addToAddressLine($receiver_address->getAddress2());
         $request->addToAddressLine($receiver_address->getAddress3());
@@ -132,9 +135,10 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return DutiableType|null
      */
-    protected function _getDutiable() {
+    protected function _getDutiable()
+    {
         $da = $this->getDeclaredAmount();
-        if(!$da || $da <=0) {
+        if (!$da || $da <= 0) {
             return null;
         }
         $request = new DutiableType();
@@ -153,22 +157,25 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return ShipmentDetailsType
      */
-    protected function _getShipmentDetails() {
+    protected function _getShipmentDetails()
+    {
         $request = new ShipmentDetailsType();
 
         /** @var $items ItemBag */
         $items = $this->getItems();
-        if($items->count()) {
-            foreach($items->all() as $item) {
-                $piece = new PieceType();
-                $piece->setPieceID($item->getId());
-                if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                    $piece->setHeight($item->getHeight());
-                    $piece->setDepth($item->getDepth());
-                    $piece->setWidth($item->getWidth());
+        if ($items->count()) {
+            foreach ($items->all() as $item) {
+                for ($i = 1; $i <= $item->getQuantity(); $i++) {
+                    $piece = new PieceType();
+                    $piece->setPieceID($item->getId());
+                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                        $piece->setHeight($item->getHeight());
+                        $piece->setDepth($item->getDepth());
+                        $piece->setWidth($item->getWidth());
+                    }
+                    $piece->setWeight($item->getWeight());
+                    $request->addToPieces($piece);
                 }
-                $piece->setWeight($item->getWeight() * $item->getQuantity());
-                $request->addToPieces($piece);
             }
         }
 
@@ -177,20 +184,20 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setWeightUnit($this->getWeightUnit() == 'KG' ? 'K' : 'L');
         $request->setGlobalProductCode($this->getServiceId()); //service GlobalProductCode
         $request->setLocalProductCode($this->getServiceId()); //service LocalProductCode
-        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now() );
+        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
         $request->setContents($this->getContent());
         $request->setDoorTo('DD');
         $request->setDimensionUnit($this->getDimensionUnit() == 'CM' ? 'C' : 'I');
-        if(($ia = $this->getInsuranceAmount()) > 0) {
+        if (($ia = $this->getInsuranceAmount()) > 0) {
             $request->setInsuredAmount($ia);
         }
 
-        $request->setPackageType($this->getPackageType() ? : 'YP');
+        $request->setPackageType($this->getPackageType() ?: 'YP');
         $request->setCurrencyCode($this->getCurrency());
         $sender_address = $this->getReceiverAddress();
         $receiver_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
-        if(!$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
+        if (!$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
             $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
         }
 
@@ -200,25 +207,26 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return ShipperType
      */
-    protected function _getShipper() {
+    protected function _getShipper()
+    {
         $request = new ShipperType();
 
         $shipping_address = $this->getSenderAddress();
         $request->setShipperID($this->getShipperAccountNumber()); //@todo ??
-        $request->setCompanyName($shipping_address->getCompanyName() ? : $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+        $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
 //        $request->setRegisteredAccount($this->getShipperAccountNumber()); //@todo ???
-        foreach([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
-            if(trim($line)) {
+        foreach ([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
+            if (trim($line)) {
                 $request->addToAddressLine($line);
             }
         }
-        if(!is_null($city = $shipping_address->getCity())) {
+        if (!is_null($city = $shipping_address->getCity())) {
             $request->setCity($city->getName());
         }
 //        $request->setDivision('mo');
 //        $request->setDivisionCode('mo');
         $request->setPostalCode($shipping_address->getPostCode());
-        if(!is_null($country = $shipping_address->getCountry())) {
+        if (!is_null($country = $shipping_address->getCountry())) {
             $request->setCountryCode($country->getIso2());
             $request->setCountryName($country->getName());
         }
@@ -239,12 +247,13 @@ class CreateBillOfLadingRequest extends AbstractRequest
     /**
      * @return LabelType
      */
-    protected function _getLabel() {
+    protected function _getLabel()
+    {
         $request = new LabelType();
         $request->setLabelTemplate('8X4_A4_PDF');
         $request->setLogo('Y');
 
-        if(!is_null($logo = $this->getLogo()) && $data = @file_get_contents($logo)) {
+        if (!is_null($logo = $this->getLogo()) && $data = @file_get_contents($logo)) {
             $customer_logo = new CustomerLogoType();
             $customer_logo->setLogoImage(base64_encode($data));
             $customer_logo->setLogoImageFormat($this->_findLogoExtension($logo));
@@ -260,7 +269,8 @@ class CreateBillOfLadingRequest extends AbstractRequest
         return $request;
     }
 
-    protected function _findLogoExtension($logo) {
+    protected function _findLogoExtension($logo)
+    {
         $extension = pathinfo($logo, PATHINFO_EXTENSION);
         $extension = explode('?', $extension);
         return strtoupper($extension[0]);

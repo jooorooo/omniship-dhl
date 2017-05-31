@@ -25,14 +25,15 @@ class ShippingServicesRequest extends AbstractRequest
     /**
      * @return DCTRequest
      */
-    public function getData() {
+    public function getData()
+    {
         $quote = new GetQuoteAType();
         $quote->setRequest($this->getHeaderRequestType());
 
         $quote->setFrom($this->_getFrom());
         $quote->setTo($this->_getTo());
         $quote->setBkgDetails($this->_getBkgDetails());
-        if(!is_null($dutiable = $this->_getDutiable())) {
+        if (!is_null($dutiable = $this->_getDutiable())) {
             $quote->setDutiable($dutiable);
         }
 
@@ -54,25 +55,26 @@ class ShippingServicesRequest extends AbstractRequest
     /**
      * @return DCTFromType
      */
-    protected function _getFrom() {
+    protected function _getFrom()
+    {
         $request = new DCTFromType();
         $address = $this->getSenderAddress();
-        if($address && !is_null($country = $address->getCountry())) {
+        if ($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
         //Required for countries where DHL has suburb level capability variation. Please refer to the Reference Data (DHL Country).
-        if($address && !is_null($state = $address->getState())) {
+        if ($address && !is_null($state = $address->getState())) {
             $request->setSuburb($state->getName());
         }
-        if($address && !is_null($city = $address->getCity())) {
+        if ($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
-        if($address) {
+        if ($address) {
             $request->setPostalcode($address->getPostCode());
         }
 
         //Shipper VAT Number is required for Brazil country with Brazil tax breakdown pricing in Quote service.
-        if(!is_null($vat = $this->getOtherParameters('sender_vat'))) {
+        if (!is_null($vat = $this->getOtherParameters('sender_vat'))) {
             $request->setVatNo($vat);
         }
         return $request;
@@ -81,20 +83,21 @@ class ShippingServicesRequest extends AbstractRequest
     /**
      * @return DCTToType
      */
-    protected function _getTo() {
+    protected function _getTo()
+    {
         $request = new DCTToType();
         $address = $this->getReceiverAddress();
-        if($address && !is_null($country = $address->getCountry())) {
+        if ($address && !is_null($country = $address->getCountry())) {
             $request->setCountryCode($country->getIso2());
         }
         //Required for countries where DHL has suburb level capability variation. Please refer to the Reference Data (DHL Country).
-        if($address && !is_null($state = $address->getState())) {
+        if ($address && !is_null($state = $address->getState())) {
             $request->setSuburb($state->getName());
         }
-        if($address && !is_null($city = $address->getCity())) {
+        if ($address && !is_null($city = $address->getCity())) {
             $request->setCity($city->getName());
         }
-        if($address) {
+        if ($address) {
             $request->setPostalcode($address->getPostCode());
         }
 //        $request->setVatNo('');
@@ -105,10 +108,11 @@ class ShippingServicesRequest extends AbstractRequest
     /**
      * @return DCTDutiableType|null
      */
-    protected function _getDutiable() {
+    protected function _getDutiable()
+    {
         $da = $this->getDeclaredAmount();
         $request = null;
-        if($da && $da > 0) {
+        if ($da && $da > 0) {
             $request = new DCTDutiableType();
             $request->setDeclaredCurrency($this->getDeclaredCurrency());
             $request->setDeclaredValue($da);
@@ -119,17 +123,17 @@ class ShippingServicesRequest extends AbstractRequest
     /**
      * @return BkgDetailsType
      */
-    protected function _getBkgDetails() {
+    protected function _getBkgDetails()
+    {
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
         $request->addToNumberOfPieces($this->getNumberOfPieces());
         /** @var $items ItemBag */
         $items = $this->getItems();
-        if($items->count()) {
-            $total = 0;
-            foreach($items->all() as $item) {
-                for($i=1; $i<=$item->getQuantity(); $i++) {
+        if ($items->count()) {
+            foreach ($items->all() as $item) {
+                for ($i = 1; $i <= $item->getQuantity(); $i++) {
                     $piece = new PieceType();
                     $piece->setPieceID($item->getId());
                     if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
@@ -139,7 +143,6 @@ class ShippingServicesRequest extends AbstractRequest
                     }
                     $piece->setWeight($item->getWeight());
                     $request->addToPieces($piece);
-                    $total++;
                 }
             }
         }
@@ -169,21 +172,21 @@ class ShippingServicesRequest extends AbstractRequest
 
         $sender_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
-        if($sender_address && $country = $sender_address->getCountry()) {
+        if ($sender_address && $country = $sender_address->getCountry()) {
             $request->setPaymentCountryCode($country->getIso2());
             $receiver_address = $this->getReceiverAddress();
-            if(!$this->getIsDocuments() && $receiver_address && $rcountry = $receiver_address->getCountry()) {
+            if (!$this->getIsDocuments() && $receiver_address && $rcountry = $receiver_address->getCountry()) {
                 $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
             }
         }
 
-        if(($cod = $this->getCashOnDeliveryAmount()) > 0) {
+        if (($cod = $this->getCashOnDeliveryAmount()) > 0) {
             $request->setCODAccountNumber($this->getOtherParameters('cod_account_number'));
             $request->setCODAmount($cod);
             $request->setCODCurrencyCode($this->getCashOnDeliveryCurrency());
         }
 
-        if(($ia = $this->getInsuranceAmount()) > 0) {
+        if (($ia = $this->getInsuranceAmount()) > 0) {
             $request->setInsuredValue($ia);
             $request->setInsuredCurrency($this->getInsuranceCurrency());
         }
