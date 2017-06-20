@@ -9,6 +9,8 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
+use Crisu83\Conversion\Quantity\Mass\Unit AS MassUnit;
+use Crisu83\Conversion\Quantity\Length\Unit AS LengthUnit;
 use Dhl\DataTypesGlobal\BillingType;
 use Dhl\DataTypesGlobal\CommodityType;
 use Dhl\DataTypesGlobal\ConsigneeType;
@@ -22,6 +24,7 @@ use Dhl\DataTypesGlobal\ContactType;
 use Dhl\DataTypesGlobal\ShipmentDetailsType;
 use Dhl\ShipmentRequest;
 use Omniship\Common\ItemBag;
+use Omniship\Dhl\Helper\Convert;
 
 class CreateBillOfLadingRequest extends AbstractRequest
 {
@@ -125,7 +128,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 //        $request->setPhoneExtension('');
 //        $contact->setFaxNumber('');
 //        $contact->setTelex('');
-        $contact->setEmail($this->getOtherParameters('receiver_email'));
+        $contact->setEmail($this->getReceiverEmail());
 
         $request->setContact($contact);
 
@@ -159,7 +162,21 @@ class CreateBillOfLadingRequest extends AbstractRequest
      */
     protected function _getShipmentDetails()
     {
+        $convert = new Convert();
         $request = new ShipmentDetailsType();
+
+        $request->setNumberOfPieces($this->getNumberOfPieces());
+        $request->setWeight($convert->convertWeightUnit($this->getWeight(), $this->getWeightUnit()));
+        $request->setWeightUnit($convert->validateWeightUnit($this->getWeightUnit()) == MassUnit::KILOGRAM ? 'K' : 'L');
+        $request->setGlobalProductCode($this->getServiceId()); //service GlobalProductCode
+        $request->setLocalProductCode($this->getServiceId()); //service LocalProductCode
+        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
+        $request->setContents($this->getContent());
+        $request->setDoorTo('DD');
+        $request->setDimensionUnit($convert->validateLengthUnit($this->getDimensionUnit()) == LengthUnit::CENTIMETRE ? 'C' : 'I');
+        if (($ia = $this->getInsuranceAmount()) > 0) {
+            $request->setInsuredAmount($ia);
+        }
 
         /** @var $items ItemBag */
         $items = $this->getItems();
@@ -169,27 +186,14 @@ class CreateBillOfLadingRequest extends AbstractRequest
                     $piece = new PieceType();
                     $piece->setPieceID($item->getId());
                     if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->setHeight($item->getHeight());
-                        $piece->setDepth($item->getDepth());
-                        $piece->setWidth($item->getWidth());
+                        $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
+                        $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
+                        $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
                     }
-                    $piece->setWeight($item->getWeight());
+                    $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
                     $request->addToPieces($piece);
                 }
             }
-        }
-
-        $request->setNumberOfPieces($this->getNumberOfPieces());
-        $request->setWeight($this->getWeight());
-        $request->setWeightUnit($this->getWeightUnit() == 'KG' ? 'K' : 'L');
-        $request->setGlobalProductCode($this->getServiceId()); //service GlobalProductCode
-        $request->setLocalProductCode($this->getServiceId()); //service LocalProductCode
-        $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
-        $request->setContents($this->getContent());
-        $request->setDoorTo('DD');
-        $request->setDimensionUnit($this->getDimensionUnit() == 'CM' ? 'C' : 'I');
-        if (($ia = $this->getInsuranceAmount()) > 0) {
-            $request->setInsuredAmount($ia);
         }
 
         $request->setPackageType($this->getPackageType() ?: 'YP');
@@ -237,7 +241,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 //        $request->setPhoneExtension('');
 //        $contact->setFaxNumber('');
 //        $contact->setTelex('');
-//        $contact->setEmail($this->getOtherParameters('receiver_email'));
+//        $contact->setEmail($this->getSenderEmail());
 
         $request->setContact($contact);
 

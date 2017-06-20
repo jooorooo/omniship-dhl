@@ -19,6 +19,7 @@ use Dhl\DCTRequestdatatypes\DCTToType;
 use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
 use Dhl\DCTRequestdatatypes\QtdShpType;
 use Omniship\Common\ItemBag;
+use Omniship\Dhl\Helper\Convert;
 
 class ShippingServicesRequest extends AbstractRequest
 {
@@ -129,23 +130,6 @@ class ShippingServicesRequest extends AbstractRequest
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
         $request->addToNumberOfPieces($this->getNumberOfPieces());
-        /** @var $items ItemBag */
-        $items = $this->getItems();
-        if ($items->count()) {
-            foreach ($items->all() as $item) {
-                for ($i = 1; $i <= $item->getQuantity(); $i++) {
-                    $piece = new PieceType();
-                    $piece->setPieceID($item->getId());
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->setHeight($item->getHeight());
-                        $piece->setDepth($item->getDepth());
-                        $piece->setWidth($item->getWidth());
-                    }
-                    $piece->setWeight($item->getWeight());
-                    $request->addToPieces($piece);
-                }
-            }
-        }
 
         /*
          * Time when the shipment can
@@ -166,9 +150,28 @@ class ShippingServicesRequest extends AbstractRequest
          */
         $request->setReadyTime(new \DateInterval('PT18H21M'));
 
+        $convert = new Convert();
 //        $request->setReadyTimeGMTOffset('+01:00');
-        $request->setDimensionUnit($this->getDimensionUnit()); //IN, CM
-        $request->setWeightUnit($this->getWeightUnit()); //KG, LB
+        $request->setDimensionUnit(strtoupper($convert->validateLengthUnit($this->getDimensionUnit()))); //IN, CM
+        $request->setWeightUnit(strtoupper($convert->validateWeightUnit($this->getWeightUnit()))); //KG, LB
+
+        /** @var $items ItemBag */
+        $items = $this->getItems();
+        if ($items->count()) {
+            foreach ($items->all() as $item) {
+                for ($i = 1; $i <= $item->getQuantity(); $i++) {
+                    $piece = new PieceType();
+                    $piece->setPieceID($item->getId());
+                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                        $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
+                        $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
+                        $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
+                    }
+                    $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
+                    $request->addToPieces($piece);
+                }
+            }
+        }
 
         $sender_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
