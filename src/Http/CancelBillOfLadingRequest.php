@@ -26,7 +26,7 @@ class CancelBillOfLadingRequest extends AbstractRequest
         $cancel_request->setPickupDate(Carbon::now());
         $cancel_request->setReason('007');
         $cancel_request->setCancelTime(Carbon::now()->format('H:i'));
-//echo htmlspecialchars($cancel_request->toXML()); exit;
+
         return $cancel_request;
     }
 
