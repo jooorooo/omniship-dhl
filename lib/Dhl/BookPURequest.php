@@ -1,7 +1,14 @@
 <?php
 
 namespace Dhl;
+
+use Dhl\DataTypesGlobal\RequestType;
+use Dhl\PickupDataTypesGlobal\RequestorType;
 use Dhl\Traits\Request;
+use Dhl\PickupDataTypesGlobal\PlaceType;
+use Dhl\PickupDataTypesGlobal\PickupType;
+use Dhl\PickupDataTypesGlobal\ContactType;
+use Dhl\PickupDataTypesGlobal\ShipmentDetailsType;
 
 /**
  * Class representing BookPURequest
@@ -17,7 +24,7 @@ class BookPURequest
     private $schemaVersion = '2.0';
 
     /**
-     * @property \Dhl\DataTypesGlobal\RequestType $request
+     * @property RequestType $request
      */
     private $request = null;
 
@@ -27,27 +34,27 @@ class BookPURequest
     private $regionCode = null;
 
     /**
-     * @property \Dhl\PickupDataTypesGlobal\RequestorType $requestor
+     * @property RequestorType $requestor
      */
     private $requestor = null;
 
     /**
-     * @property \Dhl\PickupDataTypesGlobal\PlaceType $place
+     * @property PlaceType $place
      */
     private $place = null;
 
     /**
-     * @property \Dhl\PickupDataTypesGlobal\PickupType $pickup
+     * @property PickupType $pickup
      */
     private $pickup = null;
 
     /**
-     * @property \Dhl\PickupDataTypesGlobal\ContactType $pickupContact
+     * @property ContactType $pickupContact
      */
     private $pickupContact = null;
 
     /**
-     * @property \Dhl\PickupDataTypesGlobal\ShipmentDetailsType[] $shipmentDetails
+     * @property ShipmentDetailsType[] $shipmentDetails
      */
     private $shipmentDetails = array(
         
@@ -78,7 +85,7 @@ class BookPURequest
     /**
      * Gets as request
      *
-     * @return \Dhl\DataTypesGlobal\RequestType
+     * @return RequestType
      */
     public function getRequest()
     {
@@ -88,10 +95,10 @@ class BookPURequest
     /**
      * Sets a new request
      *
-     * @param \Dhl\DataTypesGlobal\RequestType $request
+     * @param RequestType $request
      * @return self
      */
-    public function setRequest(\Dhl\DataTypesGlobal\RequestType $request)
+    public function setRequest(RequestType $request)
     {
         $this->request = $request;
         return $this;
@@ -122,7 +129,7 @@ class BookPURequest
     /**
      * Gets as requestor
      *
-     * @return \Dhl\PickupDataTypesGlobal\RequestorType
+     * @return RequestorType
      */
     public function getRequestor()
     {
@@ -132,10 +139,10 @@ class BookPURequest
     /**
      * Sets a new requestor
      *
-     * @param \Dhl\PickupDataTypesGlobal\RequestorType $requestor
+     * @param RequestorType $requestor
      * @return self
      */
-    public function setRequestor(\Dhl\PickupDataTypesGlobal\RequestorType $requestor)
+    public function setRequestor(RequestorType $requestor)
     {
         $this->requestor = $requestor;
         return $this;
@@ -144,7 +151,7 @@ class BookPURequest
     /**
      * Gets as place
      *
-     * @return \Dhl\PickupDataTypesGlobal\PlaceType
+     * @return PlaceType
      */
     public function getPlace()
     {
@@ -154,10 +161,10 @@ class BookPURequest
     /**
      * Sets a new place
      *
-     * @param \Dhl\PickupDataTypesGlobal\PlaceType $place
+     * @param PlaceType $place
      * @return self
      */
-    public function setPlace(\Dhl\PickupDataTypesGlobal\PlaceType $place)
+    public function setPlace(PlaceType $place)
     {
         $this->place = $place;
         return $this;
@@ -166,7 +173,7 @@ class BookPURequest
     /**
      * Gets as pickup
      *
-     * @return \Dhl\PickupDataTypesGlobal\PickupType
+     * @return PickupType
      */
     public function getPickup()
     {
@@ -176,10 +183,10 @@ class BookPURequest
     /**
      * Sets a new pickup
      *
-     * @param \Dhl\PickupDataTypesGlobal\PickupType $pickup
+     * @param PickupType $pickup
      * @return self
      */
-    public function setPickup(\Dhl\PickupDataTypesGlobal\PickupType $pickup)
+    public function setPickup(PickupType $pickup)
     {
         $this->pickup = $pickup;
         return $this;
@@ -188,7 +195,7 @@ class BookPURequest
     /**
      * Gets as pickupContact
      *
-     * @return \Dhl\PickupDataTypesGlobal\ContactType
+     * @return ContactType
      */
     public function getPickupContact()
     {
@@ -198,10 +205,10 @@ class BookPURequest
     /**
      * Sets a new pickupContact
      *
-     * @param \Dhl\PickupDataTypesGlobal\ContactType $pickupContact
+     * @param ContactType $pickupContact
      * @return self
      */
-    public function setPickupContact(\Dhl\PickupDataTypesGlobal\ContactType $pickupContact)
+    public function setPickupContact(ContactType $pickupContact)
     {
         $this->pickupContact = $pickupContact;
         return $this;
@@ -211,9 +218,9 @@ class BookPURequest
      * Adds as shipmentDetails
      *
      * @return self
-     * @param \Dhl\PickupDataTypesGlobal\ShipmentDetailsType $shipmentDetails
+     * @param ShipmentDetailsType $shipmentDetails
      */
-    public function addToShipmentDetails(\Dhl\PickupDataTypesGlobal\ShipmentDetailsType $shipmentDetails)
+    public function addToShipmentDetails(ShipmentDetailsType $shipmentDetails)
     {
         $this->shipmentDetails[] = $shipmentDetails;
         return $this;
@@ -222,7 +229,7 @@ class BookPURequest
     /**
      * isset shipmentDetails
      *
-     * @param scalar $index
+     * @param mixed $index
      * @return boolean
      */
     public function issetShipmentDetails($index)
@@ -233,18 +240,20 @@ class BookPURequest
     /**
      * unset shipmentDetails
      *
-     * @param scalar $index
+     * @param mixed $index
      * @return void
      */
     public function unsetShipmentDetails($index)
     {
-        unset($this->shipmentDetails[$index]);
+        if($this->issetShipmentDetails($index)) {
+            unset($this->shipmentDetails[$index]);
+        }
     }
 
     /**
      * Gets as shipmentDetails
      *
-     * @return \Dhl\PickupDataTypesGlobal\ShipmentDetailsType[]
+     * @return ShipmentDetailsType[]
      */
     public function getShipmentDetails()
     {
@@ -254,7 +263,7 @@ class BookPURequest
     /**
      * Sets a new shipmentDetails
      *
-     * @param \Dhl\PickupDataTypesGlobal\ShipmentDetailsType[] $shipmentDetails
+     * @param ShipmentDetailsType[] $shipmentDetails
      * @return self
      */
     public function setShipmentDetails(array $shipmentDetails)

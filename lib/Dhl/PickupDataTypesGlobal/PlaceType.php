@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl\PickupDataTypesGlobal;
+use Dhl\Traits\Request;
 
 /**
  * Class representing PlaceType
@@ -10,6 +11,8 @@ namespace Dhl\PickupDataTypesGlobal;
  */
 class PlaceType
 {
+
+    use Request;
 
     /**
      * Type Of Location B=Business R=Residence C= Business/Residence

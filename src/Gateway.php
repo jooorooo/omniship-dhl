@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Omniship\Common\Address;
 use Omniship\Dhl\Http\CancelBillOfLadingRequest;
 use Omniship\Dhl\Http\CreateBillOfLadingRequest;
+use Omniship\Dhl\Http\RequestCourierRequest;
 use Omniship\Dhl\Http\ShippingServicesRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
@@ -156,19 +157,20 @@ class Gateway extends AbstractGateway
      * @param null $cancelComment
      * @return CancelBillOfLadingRequest
      */
-    public function cancelBillOfLading($bol_id, $cancelComment=null) {
-        $this->setBolId((float)$bol_id)->setCancelComment($cancelComment);
-        return $this->createRequest(CancelBillOfLadingRequest::class, $this->getParameters());
-    }
+//    public function cancelBillOfLading($bol_id, $cancelComment=null) {
+//        $this->setBolId((float)$bol_id)->setCancelComment($cancelComment);
+//        return $this->createRequest(CancelBillOfLadingRequest::class, $this->getParameters());
+//    }
 
     /**
      * @param $bol_id
-     * @param null|Carbon $date
+     * @param null|Carbon $date_start
+     * @param null|Carbon $date_end
      * @return RequestCourierRequest
      */
-    public function requestCourier($bol_id, Carbon $date = null)
+    public function requestCourier($bol_id, Carbon $date_start = null, Carbon $date_end = null)
     {
-        return $this->createRequest(RequestCourierRequest::class, $this->setBolId(array_map('floatval', (array)$bol_id))->setDate($date)->getParameters());
+        return $this->createRequest(RequestCourierRequest::class, $this->setBolId(array_map('floatval', (array)$bol_id))->setStartDate($date_start)->setEndDate($date_end)->getParameters());
     }
 
     /**

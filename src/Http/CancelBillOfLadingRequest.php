@@ -19,7 +19,7 @@ class CancelBillOfLadingRequest extends AbstractRequest
     public function getData() {
         $cancel_request = new CancelPURequest();
         $cancel_request->setRequest($this->getHeaderRequestTypeGlobal());
-        $cancel_request->setRegionCode('AM');
+        $cancel_request->setRegionCode($this->getOtherParameters('region') ? : 'AM');
         $cancel_request->setConfirmationNumber($this->getBolId());
         $cancel_request->setRequestorName('simexis');
         $cancel_request->setCountryCode('CA');

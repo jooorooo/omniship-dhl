@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl\PickupDataTypesGlobal;
+use Dhl\Traits\Request;
 
 /**
  * Class representing ContactType
@@ -10,6 +11,8 @@ namespace Dhl\PickupDataTypesGlobal;
  */
 class ContactType
 {
+
+    use Request;
 
     /**
      * Contact Person Name

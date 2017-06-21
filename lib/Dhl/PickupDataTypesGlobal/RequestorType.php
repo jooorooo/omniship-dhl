@@ -1,6 +1,7 @@
 <?php
 
 namespace Dhl\PickupDataTypesGlobal;
+use Dhl\Traits\Request;
 
 /**
  * Class representing RequestorType
@@ -10,6 +11,8 @@ namespace Dhl\PickupDataTypesGlobal;
  */
 class RequestorType
 {
+
+    use Request;
 
     /**
      * Valid values are D or C. D =DHL C = credit Card
