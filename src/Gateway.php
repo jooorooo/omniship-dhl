@@ -132,7 +132,7 @@ class Gateway extends AbstractGateway
      * @param array $parameters
      * @return ShippingServicesRequest
      */
-    public function getServices(array $parameters = []) {
+    public function getQuotes(array $parameters = []) {
         return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters);
     }
 
