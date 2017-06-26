@@ -9,18 +9,18 @@
 namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
-use Omniship\Common\ShippingServiceBag;
+use Omniship\Common\ShippingQuoteBag;
 use Omniship\Dhl\Helper\Errors;
 
-class ShippingServicesResponse extends AbstractResponse
+class ShippingQuoteResponse extends AbstractResponse
 {
 
     /**
-     * @return ShippingServiceBag
+     * @return ShippingQuoteBag
      */
     public function getData()
     {
-        $result = new ShippingServiceBag();
+        $result = new ShippingQuoteBag();
         if(!is_null($this->getCode())) {
             return $result;
         }

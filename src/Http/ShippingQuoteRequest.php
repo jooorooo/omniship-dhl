@@ -21,7 +21,7 @@ use Dhl\DCTRequestdatatypes\QtdShpType;
 use Omniship\Common\ItemBag;
 use Omniship\Dhl\Helper\Convert;
 
-class ShippingServicesRequest extends AbstractRequest
+class ShippingQuoteRequest extends AbstractRequest
 {
     /**
      * @return DCTRequest
@@ -46,11 +46,11 @@ class ShippingServicesRequest extends AbstractRequest
 
     /**
      * @param $data
-     * @return ShippingServicesResponse
+     * @return ShippingQuoteResponse
      */
     protected function createResponse($data)
     {
-        return $this->response = new ShippingServicesResponse($this, $data);
+        return $this->response = new ShippingQuoteResponse($this, $data);
     }
 
     /**

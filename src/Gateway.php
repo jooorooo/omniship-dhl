@@ -13,7 +13,7 @@ use Omniship\Common\Address;
 use Omniship\Dhl\Http\CancelBillOfLadingRequest;
 use Omniship\Dhl\Http\CreateBillOfLadingRequest;
 use Omniship\Dhl\Http\RequestCourierRequest;
-use Omniship\Dhl\Http\ShippingServicesRequest;
+use Omniship\Dhl\Http\ShippingQuoteRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
 use Omniship\Dhl\Http\ValidateAddressRequest;
@@ -130,10 +130,10 @@ class Gateway extends AbstractGateway
 
     /**
      * @param array $parameters
-     * @return ShippingServicesRequest
+     * @return ShippingQuoteRequest
      */
     public function getQuotes(array $parameters = []) {
-        return $this->createRequest(ShippingServicesRequest::class, $this->getParameters() + $parameters);
+        return $this->createRequest(ShippingQuoteRequest::class, $this->getParameters() + $parameters);
     }
 
     /**

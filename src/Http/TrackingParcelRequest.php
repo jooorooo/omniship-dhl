@@ -33,7 +33,7 @@ class TrackingParcelRequest extends AbstractRequest
 
     /**
      * @param $data
-     * @return ShippingServicesResponse
+     * @return ShippingQuoteResponse
      */
     protected function createResponse($data)
     {
