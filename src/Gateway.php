@@ -13,6 +13,7 @@ use Omniship\Common\Address;
 use Omniship\Dhl\Http\CancelBillOfLadingRequest;
 use Omniship\Dhl\Http\CreateBillOfLadingRequest;
 use Omniship\Dhl\Http\RequestCourierRequest;
+use Omniship\Dhl\Http\ServicesRequest;
 use Omniship\Dhl\Http\ShippingQuoteRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
@@ -126,6 +127,15 @@ class Gateway extends AbstractGateway
      */
     public function setDutyAccountNumber($value) {
         return $this->setParameter('duty_account_number', $value);
+    }
+
+    /**
+     * @param array $parameters
+     * @return ServicesRequest
+     */
+    public function getServices(array $parameters = [])
+    {
+        return $this->createRequest(ServicesRequest::class, $this->getParameters() + $parameters);
     }
 
     /**
