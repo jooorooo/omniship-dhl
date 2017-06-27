@@ -13,6 +13,7 @@ use Dhl\Entity\AM\TrackingResponse;
 use Omniship\Common\Component;
 use Omniship\Common\EventBag;
 use Omniship\Common\TrackingBag;
+use Omniship\Dhl\Helper\Data;
 use Omniship\Dhl\Helper\Errors;
 
 class TrackingParcelResponse extends AbstractResponse
@@ -58,6 +59,7 @@ class TrackingParcelResponse extends AbstractResponse
     {
         $result = new EventBag();
         if($xml->ShipmentEvent) {
+            $event_codes = Data::trackingEventCodes()->pluck('CheckpointDescription', 'CheckpointCode');
             foreach($xml->ShipmentEvent AS $event) {
                 $code = (string)$event->ServiceEvent->EventCode;
                 $message = (string)$event->ServiceEvent->Description;
@@ -65,7 +67,7 @@ class TrackingParcelResponse extends AbstractResponse
                     $message .= ' ' . (string)$xml->ConsigneeName;
                 }
                 $result->push(new Component([
-                    'id' => $code,
+                    'id' => $event_codes->has($code) ? $event_codes->get($code) : $code,
                     'name' => $message,
                 ]));
             }
