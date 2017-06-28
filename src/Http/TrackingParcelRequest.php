@@ -24,7 +24,7 @@ class TrackingParcelRequest extends AbstractRequest
 
         $tracking->setLanguageCode($this->getLanguageCode());
 //        $tracking->CountryCode = 'BG';
-        $tracking->setAWBNumber([$this->getParcelId()]);
+        $tracking->setAWBNumber([$this->getBolId()]);
         $tracking->setLevelOfDetails('ALL_CHECK_POINTS');
         $tracking->setPiecesEnabled('S');
 
