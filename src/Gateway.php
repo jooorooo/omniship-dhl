@@ -17,6 +17,7 @@ use Omniship\Dhl\Http\ServicesRequest;
 use Omniship\Dhl\Http\ShippingQuoteRequest;
 use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
+use Omniship\Dhl\Http\TrackingParcelsRequest;
 use Omniship\Dhl\Http\ValidateAddressRequest;
 
 class Gateway extends AbstractGateway
@@ -147,11 +148,19 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * @param array $parameters
+     * @param string $bol_id
      * @return TrackingParcelRequest
      */
-    public function trackingParcel(array $parameters = []) {
-        return $this->createRequest(TrackingParcelRequest::class, $this->getParameters() + $parameters);
+    public function trackingParcel($bol_id) {
+        return $this->createRequest(TrackingParcelRequest::class, $this->setBolId($bol_id)->getParameters());
+    }
+
+    /**
+     * @param array $bol_ids
+     * @return TrackingParcelsRequest
+     */
+    public function trackingParcels(array $bol_ids = []) {
+        return $this->createRequest(TrackingParcelsRequest::class, $this->setBolId($bol_ids)->getParameters());
     }
 
     /**
