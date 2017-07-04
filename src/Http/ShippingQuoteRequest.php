@@ -184,7 +184,7 @@ class ShippingQuoteRequest extends AbstractRequest
         }
 
         if (($cod = $this->getCashOnDeliveryAmount()) > 0) {
-            $request->setCODAccountNumber($this->getOtherParameters('cod_account_number'));
+            $request->setCODAccountNumber($this->getCodAccount());
             $request->setCODAmount($cod);
             $request->setCODCurrencyCode($this->getCashOnDeliveryCurrency());
         }
