@@ -19,6 +19,7 @@ use Omniship\Dhl\Http\TrackingParcelRequest;
 use Omniship\Common\AbstractGateway;
 use Omniship\Dhl\Http\TrackingParcelsRequest;
 use Omniship\Dhl\Http\ValidateAddressRequest;
+use Omniship\Dhl\Http\ValidateCredentialsRequest;
 
 class Gateway extends AbstractGateway
 {
@@ -190,6 +191,20 @@ class Gateway extends AbstractGateway
     public function requestCourier($bol_id, Carbon $date_start = null, Carbon $date_end = null)
     {
         return $this->createRequest(RequestCourierRequest::class, $this->setBolId(array_map('floatval', (array)$bol_id))->setStartDate($date_start)->setEndDate($date_end)->getParameters());
+    }
+
+    /**
+     * @param array $parameters
+     * @param null|bool $test_mode
+     *      if set null get mode from currently instance
+     * @return ValidateCredentialsRequest
+     */
+    public function validateCredentials(array $parameters = [], $test_mode = null)
+    {
+        $instance = new Gateway();
+        $instance->initialize($parameters);
+        $instance->setTestMode(is_null($test_mode) ? $this->getTestMode() : (bool)$test_mode);
+        return $instance->createRequest(ValidateCredentialsRequest::class, $instance->getParameters());
     }
 
     /**
