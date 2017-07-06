@@ -113,7 +113,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         $receiver_address = $this->getReceiverAddress();
         $country = $receiver_address->getCountry();
-        $request->setCompanyName($receiver_address->getCompanyName() ?: ($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName()));
+        $request->setCompanyName($receiver_address->getCompanyName() ?: ($receiver_address->getFullName()));
         $request->addToAddressLine($receiver_address->getAddress1());
         $request->addToAddressLine($receiver_address->getAddress2());
         $request->addToAddressLine($receiver_address->getAddress3());
@@ -123,7 +123,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setCountryName($country ? $country->getName() : '');
 
         $contact = new ContactType();
-        $contact->setPersonName($receiver_address->getFirstName() . ' ' . $receiver_address->getLastName());
+        $contact->setPersonName($receiver_address->getFullName());
         $contact->setPhoneNumber($receiver_address->getPhone());
 //        $request->setPhoneExtension('');
 //        $contact->setFaxNumber('');
@@ -217,7 +217,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         $shipping_address = $this->getSenderAddress();
         $request->setShipperID($this->getShipperAccountNumber()); //@todo ??
-        $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+        $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFullName());
 //        $request->setRegisteredAccount($this->getShipperAccountNumber()); //@todo ???
         foreach ([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
             if (trim($line)) {
@@ -236,7 +236,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         }
 
         $contact = new ContactType();
-        $contact->setPersonName($shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+        $contact->setPersonName($shipping_address->getFullName());
         $contact->setPhoneNumber($shipping_address->getPhone());
 //        $request->setPhoneExtension('');
 //        $contact->setFaxNumber('');

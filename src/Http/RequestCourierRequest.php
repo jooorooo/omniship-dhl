@@ -60,7 +60,7 @@ class RequestCourierRequest extends AbstractRequest
         $request = new ContactType();
         $sender_address = $this->getAddress();
         if($sender_address) {
-            $request->setPersonName($sender_address->getFirstName() . ' ' . $sender_address->getLastName());
+            $request->setPersonName($sender_address->getFullName());
         }
         $request->setPhone($sender_address->getPhone());
         return $request;
@@ -89,7 +89,7 @@ class RequestCourierRequest extends AbstractRequest
         if(!$shipping_address) {
             return null;
         }
-        $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFirstName() . ' ' . $shipping_address->getLastName());
+        $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFullName());
         if($line = $shipping_address->getAddress1()) {
             $request->setAddress1($line);
         }
