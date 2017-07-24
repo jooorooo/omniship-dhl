@@ -10,6 +10,7 @@ namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
 use Omniship\Common\ShippingQuoteBag;
+use Omniship\Dhl\Helper\Data;
 use Omniship\Dhl\Helper\Errors;
 
 class ShippingQuoteResponse extends AbstractResponse
@@ -30,6 +31,9 @@ class ShippingQuoteResponse extends AbstractResponse
             foreach($bkg_details->QtdShp AS $quote) {
                 $quote = json_decode(json_encode($quote), true);
                 if(!empty($quote['ShippingCharge'])) {
+                    if(!$this->allowedServices($quote['GlobalProductCode'])) {
+                        continue;
+                    }
                     $result->push([
                         'id' => $quote['GlobalProductCode'],
                         'name' => $quote['ProductShortName'],
@@ -76,5 +80,17 @@ class ShippingQuoteResponse extends AbstractResponse
             return htmlspecialchars(!$this->getRequest()->getTestMode() && $error['Meaning'] ? $error['Meaning'] : $error['Message'], ENT_QUOTES, 'utf-8');
         }
         return parent::getMessage();
+    }
+
+    /**
+     * @param $id
+     * @return bool
+     */
+    protected function allowedServices($id) {
+        $allowed_services = $this->getRequest()->getOtherParameters('allowed_services');
+        if(is_null($allowed_services)) {
+            return true;
+        }
+        return array_search($id, $allowed_services) !== false;
     }
 }
