@@ -45,6 +45,10 @@ class Data
      * @var Collection
      */
     protected static $tracking_event_codes;
+    /**
+     * @var Collection
+     */
+    protected static $package_types;
 
     /**
      * @return Collection
@@ -92,6 +96,16 @@ class Data
     public static function regions() {
         if(is_null(static::$regions)) {
             static::$regions = new Collection(include __DIR__ . './../data/regions.php');
+        }
+        return static::$regions;
+    }
+
+    /**
+     * @return Collection
+     */
+    public static function packageTypes() {
+        if(is_null(static::$regions)) {
+            static::$regions = new Collection(include __DIR__ . './../data/package_types.php');
         }
         return static::$regions;
     }

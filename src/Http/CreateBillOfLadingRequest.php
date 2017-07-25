@@ -216,7 +216,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
                 $request->addToPieces($piece);
             }
         }
-
+        
         $request->setPackageType($this->getPackageType() ?: 'YP');
         $request->setCurrencyCode($this->getCurrency());
         $sender_address = $this->getReceiverAddress();
