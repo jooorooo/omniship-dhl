@@ -84,8 +84,8 @@ class ValidateAddressRequest extends AbstractRequest
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
-        $request->setDimensionUnit($this->findCountryData('DimensionalUnit')); //IN, CM
-        $request->setWeightUnit($this->findCountryData('WeightUnit')); //KG, LB
+        $request->setDimensionUnit(strtoupper($this->findCountryData('DimensionalUnit'))); //IN, CM
+        $request->setWeightUnit(strtoupper($this->findCountryData('WeightUnit'))); //KG, LB
 
         /*
          * Time when the shipment can

@@ -19,6 +19,7 @@ use Dhl\DCTRequestdatatypes\DCTToType;
 use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
 use Dhl\DCTRequestdatatypes\QtdShpType;
 use Omniship\Common\ItemBag;
+use Omniship\Common\PieceBag;
 use Omniship\Dhl\Helper\Convert;
 
 class ShippingQuoteRequest extends AbstractRequest
@@ -155,21 +156,22 @@ class ShippingQuoteRequest extends AbstractRequest
         $request->setDimensionUnit(strtoupper($convert->validateLengthUnit($this->getDimensionUnit()))); //IN, CM
         $request->setWeightUnit(strtoupper($convert->validateWeightUnit($this->getWeightUnit()))); //KG, LB
 
-        /** @var $items ItemBag */
-        $items = $this->getItems();
-        if ($items->count()) {
-            foreach ($items->all() as $item) {
-                for ($i = 1; $i <= $item->getQuantity(); $i++) {
-                    $piece = new PieceType();
-                    $piece->setPieceID($item->getId());
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
-                        $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
-                        $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
-                    }
-                    $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
-                    $request->addToPieces($piece);
+        /** @var $pieces PieceBag */
+        $pieces = $this->getPieces();
+        if ($pieces->count()) {
+            foreach ($pieces->all() as $item) {
+                $piece = new PieceType();
+                $piece->setPieceID($item->getId());
+                if(trim($type = $item->getName())) {
+                    $piece->setPackageType($type);
                 }
+                if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                    $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
+                    $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
+                    $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
+                }
+                $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
+                $request->addToPieces($piece);
             }
         }
 

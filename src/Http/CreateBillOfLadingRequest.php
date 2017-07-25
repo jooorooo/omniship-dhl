@@ -24,6 +24,8 @@ use Dhl\DataTypesGlobal\ContactType;
 use Dhl\DataTypesGlobal\ShipmentDetailsType;
 use Dhl\ShipmentRequest;
 use Omniship\Common\ItemBag;
+use Omniship\Common\PieceBag;
+use Omniship\Consts;
 use Omniship\Dhl\Helper\Convert;
 
 class CreateBillOfLadingRequest extends AbstractRequest
@@ -65,13 +67,13 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         $shipment_request->setShipper($this->_getShipper());
 
-        $specialService = new SpecialServiceType();
-        $specialService->setSpecialServiceType('A');
-        $shipment_request->addToSpecialService($specialService);
-
-        $specialService = new SpecialServiceType();
-        $specialService->setSpecialServiceType('I');
-        $shipment_request->addToSpecialService($specialService);
+//        $specialService = new SpecialServiceType();
+//        $specialService->setSpecialServiceType('A');
+//        $shipment_request->addToSpecialService($specialService);
+//
+//        $specialService = new SpecialServiceType();
+//        $specialService->setSpecialServiceType('I');
+//        $shipment_request->addToSpecialService($specialService);
 
         $shipment_request->setEProcShip('N');
         $shipment_request->setLabelImageFormat('PDF');
@@ -97,11 +99,28 @@ class CreateBillOfLadingRequest extends AbstractRequest
     {
         $request = new BillingType();
         $request->setShipperAccountNumber($this->getShipperAccountNumber());
-        $request->setShippingPaymentType('S');
+        $request->setShippingPaymentType($this->getPayerType());
         $request->setBillingAccountNumber($this->getBillingAccountNumber());
-        $request->setDutyPaymentType('S');
-        $request->setDutyAccountNumber($this->getDutyAccountNumber());
+        if(($da = $this->getDeclaredAmount()) > 0) {
+            $request->setDutyPaymentType($this->getPayerType());
+            $request->setDutyAccountNumber($this->getDutyAccountNumber());
+        }
         return $request;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getPayerType() {
+        switch ($this->getPayer()) {
+            case Consts::PAYER_SENDER:
+            default:
+                return 'S'; //sender
+            case Consts::PAYER_RECEIVER:
+                return 'R'; //receiver
+            case Consts::PAYER_OTHER:
+                return 'T'; //other
+        }
     }
 
     /**
@@ -173,26 +192,28 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
         $request->setContents($this->getContent());
         $request->setDoorTo('DD');
+
         $request->setDimensionUnit($convert->validateLengthUnit($this->getDimensionUnit()) == LengthUnit::CENTIMETRE ? 'C' : 'I');
         if (($ia = $this->getInsuranceAmount()) > 0) {
             $request->setInsuredAmount($ia);
         }
 
-        /** @var $items ItemBag */
-        $items = $this->getItems();
-        if ($items->count()) {
-            foreach ($items->all() as $item) {
-                for ($i = 1; $i <= $item->getQuantity(); $i++) {
-                    $piece = new PieceType();
-                    $piece->setPieceID($item->getId());
-                    if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
-                        $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
-                        $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
-                        $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
-                    }
-                    $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
-                    $request->addToPieces($piece);
+        /** @var $pieces PieceBag */
+        $pieces = $this->getPieces();
+        if ($pieces->count()) {
+            foreach ($pieces->all() as $item) {
+                $piece = new PieceType();
+                $piece->setPieceID($item->getId());
+                if(trim($type = $item->getName())) {
+                    $piece->setPackageType($type);
                 }
+                if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
+                    $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
+                    $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
+                    $piece->setWidth($convert->convertLengthUnit($item->getWidth(), $this->getDimensionUnit()));
+                }
+                $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
+                $request->addToPieces($piece);
             }
         }
 
@@ -219,10 +240,12 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setShipperID($this->getShipperAccountNumber()); //@todo ??
         $request->setCompanyName($shipping_address->getCompanyName() ?: $shipping_address->getFullName());
 //        $request->setRegisteredAccount($this->getShipperAccountNumber()); //@todo ???
-        foreach ([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()] AS $line) {
-            if (trim($line)) {
-                $request->addToAddressLine($line);
-            }
+        if (!is_null($country = $shipping_address->getCountry())) {
+            $request->setCountryCode($country->getIso2());
+            $request->setCountryName($country->getName());
+        }
+        foreach (array_filter([$shipping_address->getAddress1(), $shipping_address->getAddress2(), $shipping_address->getAddress3()]) AS $line) {
+            $request->addToAddressLine($line);
         }
         if (!is_null($city = $shipping_address->getCity())) {
             $request->setCity($city->getName());
@@ -230,10 +253,6 @@ class CreateBillOfLadingRequest extends AbstractRequest
 //        $request->setDivision('mo');
 //        $request->setDivisionCode('mo');
         $request->setPostalCode($shipping_address->getPostCode());
-        if (!is_null($country = $shipping_address->getCountry())) {
-            $request->setCountryCode($country->getIso2());
-            $request->setCountryName($country->getName());
-        }
 
         $contact = new ContactType();
         $contact->setPersonName($shipping_address->getFullName());
