@@ -104,10 +104,10 @@ class Data
      * @return Collection
      */
     public static function packageTypes() {
-        if(is_null(static::$regions)) {
-            static::$regions = new Collection(include __DIR__ . './../data/package_types.php');
+        if(is_null(static::$package_types)) {
+            static::$package_types = new Collection(include __DIR__ . './../data/package_types.php');
         }
-        return static::$regions;
+        return static::$package_types;
     }
 
     /**
