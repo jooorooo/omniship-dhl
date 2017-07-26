@@ -162,9 +162,6 @@ class ShippingQuoteRequest extends AbstractRequest
             foreach ($pieces->all() as $item) {
                 $piece = new PieceType();
                 $piece->setPieceID($item->getId());
-                if(trim($type = $item->getName())) {
-                    $piece->setPackageType($type);
-                }
                 if ($item->getHeight() && $item->getDepth() && $item->getWidth()) {
                     $piece->setHeight($convert->convertLengthUnit($item->getHeight(), $this->getDimensionUnit()));
                     $piece->setDepth($convert->convertLengthUnit($item->getDepth(), $this->getDimensionUnit()));
@@ -175,7 +172,7 @@ class ShippingQuoteRequest extends AbstractRequest
             }
         }
 
-        $sender_address = $this->getReceiverAddress();
+        $sender_address = $this->getSenderAddress();
         $request->setIsDutiable('N');
         if ($sender_address && $country = $sender_address->getCountry()) {
             $request->setPaymentCountryCode($country->getIso2());

@@ -88,7 +88,7 @@ class ShippingQuoteResponse extends AbstractResponse
      */
     protected function allowedServices($id) {
         $allowed_services = $this->getRequest()->getOtherParameters('allowed_services');
-        if(is_null($allowed_services)) {
+        if(is_null($allowed_services) || empty($allowed_services)) {
             return true;
         }
         return array_search($id, $allowed_services) !== false;
