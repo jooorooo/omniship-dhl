@@ -215,16 +215,7 @@ class Gateway extends AbstractGateway
     {
         return $this->createRequest(ValidateAddressRequest::class, $this->setAddress($address)->getParameters());
     }
-
-    /**
-     * Supports Cash On Delivery
-     *
-     * @return boolean True if this gateway supports the Cash On Delivery
-     */
-    public function supportsCashOnDelivery()
-    {
-        return true;
-    }
+    
     /**
      * Supports Insurance
      *

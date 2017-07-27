@@ -18,7 +18,6 @@ use Dhl\DCTRequestdatatypes\DCTFromType;
 use Dhl\DCTRequestdatatypes\DCTToType;
 use Dhl\DCTRequestdatatypes\QtdShpExChrgType;
 use Dhl\DCTRequestdatatypes\QtdShpType;
-use Omniship\Common\ItemBag;
 use Omniship\Common\PieceBag;
 use Omniship\Dhl\Helper\Convert;
 
@@ -41,7 +40,7 @@ class ShippingQuoteRequest extends AbstractRequest
 
         $request = new DCTRequest();
         $request->setGetQuote($quote);
-
+//        exit(htmlspecialchars($request->toXML()));
         return $request;
     }
 
@@ -130,7 +129,8 @@ class ShippingQuoteRequest extends AbstractRequest
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
-        $request->addToNumberOfPieces($this->getNumberOfPieces());
+        $request->addToNumberOfPieces($number_of_pieces = $this->getNumberOfPieces());
+//        $request->setPaymentAccountNumber($this->getBillingAccountNumber());
 
         /*
          * Time when the shipment can
@@ -170,22 +170,21 @@ class ShippingQuoteRequest extends AbstractRequest
                 $piece->setWeight($convert->convertWeightUnit($item->getWeight(), $this->getWeightUnit()));
                 $request->addToPieces($piece);
             }
+        } elseif($number_of_pieces == 1) {
+            $piece = new PieceType();
+            $piece->setWeight($this->getWeight());
+            $piece->setPieceID(1);
+            $request->addToPieces($piece);
         }
 
         $sender_address = $this->getSenderAddress();
         $request->setIsDutiable('N');
-        if ($sender_address && $country = $sender_address->getCountry()) {
-            $request->setPaymentCountryCode($country->getIso2());
+        $request->setPaymentCountryCode($sender_address->getCountry() ? $sender_address->getCountry()->getIso2() : null);
+        if ($this->_getDutiable() && $sender_address && $country = $sender_address->getCountry()) {
             $receiver_address = $this->getReceiverAddress();
             if (!$this->getIsDocuments() && $receiver_address && $rcountry = $receiver_address->getCountry()) {
                 $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
             }
-        }
-
-        if (($cod = $this->getCashOnDeliveryAmount()) > 0) {
-            $request->setCODAccountNumber($this->getCodAccount());
-            $request->setCODAmount($cod);
-            $request->setCODCurrencyCode($this->getCashOnDeliveryCurrency());
         }
 
         if (($ia = $this->getInsuranceAmount()) > 0) {

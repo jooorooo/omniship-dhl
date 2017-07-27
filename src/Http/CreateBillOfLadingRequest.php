@@ -217,13 +217,12 @@ class CreateBillOfLadingRequest extends AbstractRequest
             }
         }
 
-
         $request->setPackageType($this->getPackageType() ?: 'YP');
         $request->setCurrencyCode($this->getCurrency());
         $sender_address = $this->getReceiverAddress();
         $receiver_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
-        if (!$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
+        if ($this->_getDutiable() && !$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
             $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
         }
 
