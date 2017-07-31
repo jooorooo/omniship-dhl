@@ -8,6 +8,9 @@
 
 namespace Omniship\Dhl\Http;
 
+use Carbon\Carbon;
+use Omniship\Common\RequestCourier;
+
 class RequestCourierResponse extends AbstractResponse
 {
 
@@ -20,7 +23,17 @@ class RequestCourierResponse extends AbstractResponse
             return false;
         }
 
-        return $this->getXml();
+        $timezone = null;
+        if(!is_null($address = $this->getRequest()->getAddress())) {
+            $timezone = $address->getTimeZone();
+        }
+        
+        $request = new RequestCourier([
+            'request_id' => (string)$this->getXml()->ConfirmationNumber,
+            'pickup_date' => Carbon::createFromFormat('H:i', (string)$this->getXml()->ReadyByTime, $timezone)
+        ]);
+
+        return $request;
     }
 
 }
