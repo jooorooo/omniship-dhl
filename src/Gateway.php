@@ -26,6 +26,8 @@ class Gateway extends AbstractGateway
 
     private $name = 'Dhl';
 
+    const TRACKING_URL = 'http://www.dhl.com/en/express/tracking.html?AWB=%s&brand=DHL';
+
     /**
      * @return string
      */
@@ -214,6 +216,14 @@ class Gateway extends AbstractGateway
     public function validateAddress(Address $address)
     {
         return $this->createRequest(ValidateAddressRequest::class, $this->setAddress($address)->getParameters());
+    }
+
+    /**
+     * @param $parcel_id
+     * @return string
+     */
+    public function trackingUrl($parcel_id) {
+        return sprintf(static::TRACKING_URL, $parcel_id);
     }
     
     /**
