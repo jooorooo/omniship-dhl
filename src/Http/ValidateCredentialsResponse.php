@@ -19,10 +19,29 @@ class ValidateCredentialsResponse extends AbstractResponse
         if(!is_null($this->getCode())) {
             return false;
         }
-        if(empty($this->getXml()->AWBInfo->Status->ActionStatus)) {
-            return true;
+        return is_null($this->getCode()) && is_null($this->getMessage());
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMessage()
+    {
+        if(strpos(parent::getMessage(), 'No Shipments Found') === 0) {
+            return null;
         }
-        return (string)$this->getXml()->AWBInfo->Status->ActionStatus == 'success';
+        return parent::getMessage();
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getCode()
+    {
+        if(parent::getCode() == 209) {
+            return null;
+        }
+        return parent::getCode();
     }
 
 }
