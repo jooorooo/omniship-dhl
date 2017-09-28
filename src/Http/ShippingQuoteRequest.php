@@ -111,9 +111,8 @@ class ShippingQuoteRequest extends AbstractRequest
      */
     protected function _getDutiable()
     {
-        $da = $this->getDeclaredAmount();
         $request = null;
-        if ($da && $da > 0) {
+        if (($da = $this->getDeclaredAmount()) > 0) {
             $request = new DCTDutiableType();
             $request->setDeclaredCurrency($this->getDeclaredCurrency());
             $request->setDeclaredValue($da);

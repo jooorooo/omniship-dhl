@@ -159,8 +159,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
      */
     protected function _getDutiable()
     {
-        $da = $this->getDeclaredAmount();
-        if (!$da || $da <= 0) {
+        if (($da = $this->getDeclaredAmount()) > 0) {
             return null;
         }
         $request = new DutiableType();
