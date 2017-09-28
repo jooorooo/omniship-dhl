@@ -10,6 +10,7 @@ namespace Omniship\Dhl\Http;
 
 use Carbon\Carbon;
 use Omniship\Common\ShippingQuoteBag;
+use Omniship\Consts;
 use Omniship\Dhl\Helper\Data;
 use Omniship\Dhl\Helper\Errors;
 
@@ -46,7 +47,8 @@ class ShippingQuoteResponse extends AbstractResponse
                         'currency' => $quote['CurrencyCode'],
                         'tax' => $quote['TotalTaxAmount'],
                         'insurance' => 0,
-                        'exchange_rate' => $quote['ExchangeRate']
+                        'exchange_rate' => $quote['ExchangeRate'],
+                        'payer' => $this->getRequest()->getPayer() ? : Consts::PAYER_SENDER
                     ]);
                 }
             }
@@ -87,7 +89,7 @@ class ShippingQuoteResponse extends AbstractResponse
      * @return bool
      */
     protected function allowedServices($id) {
-        $allowed_services = $this->getRequest()->getOtherParameters('allowed_services');
+        $allowed_services = $this->getRequest()->getAllowedServices();
         if(is_null($allowed_services) || empty($allowed_services)) {
             return true;
         }
