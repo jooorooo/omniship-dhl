@@ -47,6 +47,7 @@ class ShippingQuoteResponse extends AbstractResponse
                         'currency' => $quote['CurrencyCode'],
                         'tax' => $quote['TotalTaxAmount'],
                         'insurance' => 0,
+                        'cash_on_delivery' => 0,
                         'exchange_rate' => $quote['ExchangeRate'],
                         'payer' => $this->getRequest()->getPayer() ? : Consts::PAYER_SENDER
                     ]);

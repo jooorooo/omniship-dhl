@@ -32,6 +32,8 @@ class CreateBillOfLadingResponse extends AbstractResponse
         $result->setEstimatedDeliveryDate(null);
         $result->setPickupDate($this->getRequest()->getShipmentDate());
         $result->setTotal(!empty($xml->ShippingCharge) ? (float)$xml->ShippingCharge : null);
+        $result->setInsurance(0);
+        $result->setCashOnDelivery(0);
         $result->setCurrency((string)$xml->CurrencyCode);
 
         return $result;
