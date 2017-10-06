@@ -35,6 +35,7 @@ class ShippingQuoteResponse extends AbstractResponse
                     if(!$this->allowedServices($quote['GlobalProductCode'])) {
                         continue;
                     }
+
                     $result->push([
                         'id' => $quote['GlobalProductCode'],
                         'name' => $quote['ProductShortName'],
@@ -49,7 +50,10 @@ class ShippingQuoteResponse extends AbstractResponse
                         'insurance' => 0,
                         'cash_on_delivery' => 0,
                         'exchange_rate' => $quote['ExchangeRate'],
-                        'payer' => $this->getRequest()->getPayer() ? : Consts::PAYER_SENDER
+                        'payer' => $this->getRequest()->getPayer() ? : Consts::PAYER_SENDER,
+                        'allowance_fixed_time_delivery' => $this->getRequest()->getGateway()->supportPriorityTime(),
+                        'allowance_cash_on_delivery' => $this->getRequest()->getGateway()->supportsCashOnDelivery(),
+                        'allowance_insurance' => $this->getRequest()->getGateway()->supportsInsurance()
                     ]);
                 }
             }
