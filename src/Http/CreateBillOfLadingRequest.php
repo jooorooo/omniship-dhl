@@ -272,9 +272,9 @@ class CreateBillOfLadingRequest extends AbstractRequest
     protected function _getLabel()
     {
         $request = new LabelType();
-        $request->setLabelTemplate('8X4_A4_PDF');
-        $request->setLogo('Y');
+        $request->setLabelTemplate($this->getOtherParameters('label_size', '8X4_A4_PDF')); //'8X4_A4_PDF'
 
+        $request->setLogo('Y');
         if (!is_null($logo = $this->getLogo()) && $data = @file_get_contents($logo)) {
             $customer_logo = new CustomerLogoType();
             $customer_logo->setLogoImage(base64_encode($data));

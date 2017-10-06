@@ -84,7 +84,7 @@ class LabelType
     /**
      * Sets a new labelTemplate
      *
-     * @param string $labelTemplate
+     * @param string $labelTemplate / 8X4_A4_PDF,8X4_thermal,8X4_A4_TC_PDF,6X4_A4_PDF,6X4_thermal,8X4_CI_PDF,8X4_CI_thermal
      * @return self
      */
     public function setLabelTemplate($labelTemplate)
