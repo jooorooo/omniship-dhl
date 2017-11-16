@@ -31,7 +31,7 @@ class ShippingQuoteResponse extends AbstractResponse
             $bkg_details = $this->getXml()->GetQuoteResponse->BkgDetails;
             foreach($bkg_details->QtdShp AS $quote) {
                 $quote = json_decode(json_encode($quote), true);
-                if(!empty($quote['ShippingCharge'])) {
+                if(!empty($quote['ShippingCharge']) && $quote['ShippingCharge'] > 0) {
                     if(!$this->allowedServices($quote['GlobalProductCode'])) {
                         continue;
                     }
