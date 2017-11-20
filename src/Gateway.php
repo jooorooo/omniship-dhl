@@ -31,7 +31,8 @@ class Gateway extends AbstractGateway
     /**
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
@@ -39,7 +40,8 @@ class Gateway extends AbstractGateway
      * @param $name
      * @return $this
      */
-    public function setName($name) {
+    public function setName($name)
+    {
         $this->name = $name;
         return $this;
     }
@@ -61,7 +63,8 @@ class Gateway extends AbstractGateway
     /**
      * @return mixed
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->getParameter('username');
     }
 
@@ -69,14 +72,16 @@ class Gateway extends AbstractGateway
      * @param $value
      * @return $this
      */
-    public function setUsername($value) {
+    public function setUsername($value)
+    {
         return $this->setParameter('username', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->getParameter('password');
     }
 
@@ -84,14 +89,16 @@ class Gateway extends AbstractGateway
      * @param $value
      * @return $this
      */
-    public function setPassword($value) {
+    public function setPassword($value)
+    {
         return $this->setParameter('password', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getShipperAccountNumber() {
+    public function getShipperAccountNumber()
+    {
         return $this->getParameter('shipper_account_number');
     }
 
@@ -99,14 +106,16 @@ class Gateway extends AbstractGateway
      * @param $value
      * @return $this
      */
-    public function setShipperAccountNumber($value) {
+    public function setShipperAccountNumber($value)
+    {
         return $this->setParameter('shipper_account_number', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getBillingAccountNumber() {
+    public function getBillingAccountNumber()
+    {
         return $this->getParameter('billing_account_number');
     }
 
@@ -114,14 +123,16 @@ class Gateway extends AbstractGateway
      * @param $value
      * @return $this
      */
-    public function setBillingAccountNumber($value) {
+    public function setBillingAccountNumber($value)
+    {
         return $this->setParameter('billing_account_number', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getDutyAccountNumber() {
+    public function getDutyAccountNumber()
+    {
         return $this->getParameter('duty_account_number');
     }
 
@@ -129,7 +140,8 @@ class Gateway extends AbstractGateway
      * @param $value
      * @return $this
      */
-    public function setDutyAccountNumber($value) {
+    public function setDutyAccountNumber($value)
+    {
         return $this->setParameter('duty_account_number', $value);
     }
 
@@ -143,10 +155,17 @@ class Gateway extends AbstractGateway
     }
 
     /**
-     * @param array $parameters
+     * @param array|ShippingQuoteRequest $parameters
      * @return ShippingQuoteRequest
      */
-    public function getQuotes(array $parameters = []) {
+    public function getQuotes($parameters = [])
+    {
+        if ($parameters instanceof ShippingQuoteRequest) {
+            return $parameters;
+        }
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
         return $this->createRequest(ShippingQuoteRequest::class, $this->getParameters() + $parameters);
     }
 
@@ -154,7 +173,8 @@ class Gateway extends AbstractGateway
      * @param string $bol_id
      * @return TrackingParcelRequest
      */
-    public function trackingParcel($bol_id) {
+    public function trackingParcel($bol_id)
+    {
         return $this->createRequest(TrackingParcelRequest::class, $this->setBolId($bol_id)->getParameters());
     }
 
@@ -162,15 +182,23 @@ class Gateway extends AbstractGateway
      * @param array $bol_ids
      * @return TrackingParcelsRequest
      */
-    public function trackingParcels(array $bol_ids = []) {
+    public function trackingParcels(array $bol_ids = [])
+    {
         return $this->createRequest(TrackingParcelsRequest::class, $this->setBolId($bol_ids)->getParameters());
     }
 
     /**
-     * @param array $parameters
+     * @param array|CreateBillOfLadingRequest $parameters
      * @return CreateBillOfLadingRequest
      */
-    public function createBillOfLading(array $parameters = []) {
+    public function createBillOfLading($parameters = [])
+    {
+        if ($parameters instanceof CreateBillOfLadingRequest) {
+            return $parameters;
+        }
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
         return $this->createRequest(CreateBillOfLadingRequest::class, $this->getParameters() + $parameters);
     }
 
@@ -222,10 +250,11 @@ class Gateway extends AbstractGateway
      * @param $parcel_id
      * @return string
      */
-    public function trackingUrl($parcel_id) {
+    public function trackingUrl($parcel_id)
+    {
         return sprintf(static::TRACKING_URL, $parcel_id);
     }
-    
+
     /**
      * Supports Insurance
      *
@@ -235,6 +264,7 @@ class Gateway extends AbstractGateway
     {
         return true;
     }
+
     /**
      * Supports Declared
      *
