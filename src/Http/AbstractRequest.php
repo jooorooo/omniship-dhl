@@ -30,6 +30,12 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     protected $liveEndpoint = 'https://xmlpi-ea.dhl.com/XMLShippingServlet?isUTF8Support=true';
 
+    protected $EUCodeList = [
+        "BE", "BG", "CZ", "DK", "DE", "EE", "IE", "EL", "ES", "FR", "HR", "IT", "CY",
+        "LV", "LT", "LU", "HU", "MT", "NL", "AT", "PL", "PT", "RO", "SI", "SK", "FI",
+        "SE", "UK", "GR"
+    ];
+
     /**
      * @return mixed
      */

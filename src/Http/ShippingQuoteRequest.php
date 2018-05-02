@@ -181,8 +181,10 @@ class ShippingQuoteRequest extends AbstractRequest
         $request->setPaymentCountryCode($sender_address->getCountry() ? $sender_address->getCountry()->getIso2() : null);
         if ($this->_getDutiable() && $sender_address && $country = $sender_address->getCountry()) {
             $receiver_address = $this->getReceiverAddress();
-            if (!$this->getIsDocuments() && $receiver_address && $rcountry = $receiver_address->getCountry()) {
-                $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+            if (!$this->getIsDocuments() && $receiver_address && ($rcountry = $receiver_address->getCountry()) && (in_array($rcountry->getIso2(), $this->EUCodeList) || in_array($country->getIso2(), $this->EUCodeList))) {
+                if((in_array($rcountry->getIso2(), $this->EUCodeList) && !in_array($country->getIso2(), $this->EUCodeList)) || (!in_array($rcountry->getIso2(), $this->EUCodeList) && in_array($country->getIso2(), $this->EUCodeList))) {
+                    $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+                }
             }
         }
 

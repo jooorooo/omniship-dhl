@@ -221,8 +221,10 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $sender_address = $this->getReceiverAddress();
         $receiver_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
-        if ($this->_getDutiable() && !$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry())) {
-            $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+        if ($this->_getDutiable() && !$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry()) && (in_array($rcountry->getIso2(), $this->EUCodeList) || in_array($country->getIso2(), $this->EUCodeList))) {
+            if((in_array($rcountry->getIso2(), $this->EUCodeList) && !in_array($country->getIso2(), $this->EUCodeList)) || (!in_array($rcountry->getIso2(), $this->EUCodeList) && in_array($country->getIso2(), $this->EUCodeList))) {
+                $request->setIsDutiable($rcountry->getIso2() != $country->getIso2() ? 'Y' : 'N');
+            }
         }
 
         return $request;
