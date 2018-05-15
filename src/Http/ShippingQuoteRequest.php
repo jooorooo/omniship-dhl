@@ -128,6 +128,10 @@ class ShippingQuoteRequest extends AbstractRequest
         $request = new BkgDetailsType();
         $request->setDate($this->getShipmentDate() ? $this->getShipmentDate() : Carbon::now());
 
+        if(!empty($payment_account_number = $this->getBillingAccountNumber())) {
+            $request->setPaymentAccountNumber($payment_account_number);
+        }
+
         $request->addToNumberOfPieces($number_of_pieces = $this->getNumberOfPieces());
 //        $request->setPaymentAccountNumber($this->getBillingAccountNumber());
 
