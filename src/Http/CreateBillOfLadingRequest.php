@@ -79,7 +79,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $shipment_request->setLabelImageFormat('PDF');
 
         $shipment_request->setLabel($this->_getLabel());
-
+        file_put_contents('d:/dhl-box.xml', $shipment_request->toXML());
         return $shipment_request;
     }
 
@@ -132,7 +132,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         $receiver_address = $this->getReceiverAddress();
         $country = $receiver_address->getCountry();
-        $request->setCompanyName($receiver_address->getCompanyName() ?: ($receiver_address->getFullName()));
+        $request->setCompanyName(mb_substr($receiver_address->getCompanyName() ?: ($receiver_address->getFullName()), 0, 35));
         $request->addToAddressLine($receiver_address->getAddress1());
         $request->addToAddressLine($receiver_address->getAddress2());
         $request->addToAddressLine($receiver_address->getAddress3());
@@ -142,7 +142,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setCountryName($country ? $country->getName() : '');
 
         $contact = new ContactType();
-        $contact->setPersonName($receiver_address->getFullName());
+        $contact->setPersonName(mb_substr($receiver_address->getFullName(), 0, 35));
         $contact->setPhoneNumber($receiver_address->getPhone());
 //        $request->setPhoneExtension('');
 //        $contact->setFaxNumber('');
