@@ -79,7 +79,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $shipment_request->setLabelImageFormat('PDF');
 
         $shipment_request->setLabel($this->_getLabel());
-        file_put_contents('d:/dhl-box.xml', $shipment_request->toXML());
+
         return $shipment_request;
     }
 
