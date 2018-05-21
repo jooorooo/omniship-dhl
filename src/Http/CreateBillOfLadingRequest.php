@@ -159,7 +159,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
      */
     protected function _getDutiable()
     {
-        if (($da = $this->getDeclaredAmount()) > 0) {
+        if (($da = $this->getDeclaredAmount()) <= 0) {
             return null;
         }
         $request = new DutiableType();
@@ -218,7 +218,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
 
         $request->setPackageType($this->getPackageType() ?: 'YP');
         $request->setCurrencyCode($this->getCurrency());
-        $sender_address = $this->getReceiverAddress();
+        $sender_address = $this->getSenderAddress();
         $receiver_address = $this->getReceiverAddress();
         $request->setIsDutiable('N');
         if ($this->_getDutiable() && !$this->getIsDocuments() && $sender_address && !is_null($country = $sender_address->getCountry()) && $receiver_address && !is_null($rcountry = $receiver_address->getCountry()) && (in_array($rcountry->getIso2(), $this->EUCodeList) || in_array($country->getIso2(), $this->EUCodeList))) {

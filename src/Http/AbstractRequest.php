@@ -104,6 +104,14 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     /**
+     * @param $value
+     * @return $this
+     */
+    public function setDutyAccountNumber($value) {
+        return $this->setParameter('duty_account_number', $value);
+    }
+
+    /**
      * @return RequestType
      */
     public function getHeaderRequestType() {
