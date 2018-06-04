@@ -17,6 +17,10 @@ class AbstractResponse extends BaseAbstractResponse
      * @var \SimpleXMLElement
      */
     protected $xml;
+    /**
+     * @var string
+     */
+    protected $content;
 
     /**
      * @return null|string
@@ -47,6 +51,26 @@ class AbstractResponse extends BaseAbstractResponse
         }
         return null;
     }
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequestFormatted()
+    {
+        if(!empty($request = $this->getRequest()) && !empty($data = $request->getData())) {
+            return $data->toXml();
+        }
+        return null;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function getResponseFormatted()
+    {
+        if(is_null($this->content)) {
+            $this->content = $this->data->getContents();
+        }
+        return $this->content;
+    }
 
     /**
      * @return \stdClass
@@ -56,7 +80,7 @@ class AbstractResponse extends BaseAbstractResponse
         if(!is_null($this->xml)) {
             return $this->xml;
         }
-        return $this->xml = ResponseParser::xml($this->data->getContents());
+        return $this->xml = ResponseParser::xml($this->content = $this->getResponseFormatted());
     }
 
 }
