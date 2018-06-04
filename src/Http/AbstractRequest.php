@@ -160,5 +160,17 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     abstract protected function createResponse($data);
+    /**
+     * Get the formatted Request.
+     *
+     * @return null|string
+     */
+    public function getRequestFormatted()
+    {
+        if(method_exists($this->getData(), 'toXml')) {
+            return $this->getData()->toXml();
+        }
+        return json_encode($this->getData());
+    }
 
 }
