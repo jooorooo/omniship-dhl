@@ -21,7 +21,7 @@ class CancelBillOfLadingRequest extends AbstractRequest
         $cancel_request->setRequest($this->getHeaderRequestTypeGlobal());
         $cancel_request->setRegionCode($this->getOtherParameters('region') ? : 'AM');
         $cancel_request->setConfirmationNumber($this->getBolId());
-        $cancel_request->setRequestorName('simexis');
+        $cancel_request->setRequestorName('CLOUDCART');
         $cancel_request->setCountryCode('CA');
         $cancel_request->setPickupDate(Carbon::now());
         $cancel_request->setReason('007');
