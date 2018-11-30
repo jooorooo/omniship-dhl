@@ -39,7 +39,8 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * @return mixed
      */
-    public function getUsername() {
+    public function getUsername()
+    {
         return $this->getParameter('username');
     }
 
@@ -47,14 +48,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @param $value
      * @return $this
      */
-    public function setUsername($value) {
+    public function setUsername($value)
+    {
         return $this->setParameter('username', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getPassword() {
+    public function getPassword()
+    {
         return $this->getParameter('password');
     }
 
@@ -62,14 +65,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @param $value
      * @return $this
      */
-    public function setPassword($value) {
+    public function setPassword($value)
+    {
         return $this->setParameter('password', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getShipperAccountNumber() {
+    public function getShipperAccountNumber()
+    {
         return $this->getParameter('shipper_account_number');
     }
 
@@ -77,14 +82,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @param $value
      * @return $this
      */
-    public function setShipperAccountNumber($value) {
+    public function setShipperAccountNumber($value)
+    {
         return $this->setParameter('shipper_account_number', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getBillingAccountNumber() {
+    public function getBillingAccountNumber()
+    {
         return $this->getParameter('billing_account_number');
     }
 
@@ -92,14 +99,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @param $value
      * @return $this
      */
-    public function setBillingAccountNumber($value) {
+    public function setBillingAccountNumber($value)
+    {
         return $this->setParameter('billing_account_number', $value);
     }
 
     /**
      * @return mixed
      */
-    public function getDutyAccountNumber() {
+    public function getDutyAccountNumber()
+    {
         return $this->getParameter('duty_account_number');
     }
 
@@ -107,14 +116,16 @@ abstract class AbstractRequest extends BaseAbstractRequest
      * @param $value
      * @return $this
      */
-    public function setDutyAccountNumber($value) {
+    public function setDutyAccountNumber($value)
+    {
         return $this->setParameter('duty_account_number', $value);
     }
 
     /**
      * @return RequestType
      */
-    public function getHeaderRequestType() {
+    public function getHeaderRequestType()
+    {
         $headers = new ServiceHeaderType();
         $headers->setSiteID($this->getUsername());
         $headers->setPassword($this->getPassword());
@@ -129,7 +140,8 @@ abstract class AbstractRequest extends BaseAbstractRequest
     /**
      * @return GlobalRequestType
      */
-    public function getHeaderRequestTypeGlobal() {
+    public function getHeaderRequestTypeGlobal()
+    {
         $headers = new GlobalServiceHeaderType();
         $headers->setSiteID($this->getUsername());
         $headers->setPassword($this->getPassword());
@@ -141,9 +153,10 @@ abstract class AbstractRequest extends BaseAbstractRequest
         return $request;
     }
 
-    public function sendData($data) {
+    public function sendData($data)
+    {
         $httpRequest = $this->httpClient->post($this->getEndpoint(), [], $data->toXml());
-        if($httpRequest->getStatusCode() != 200) {
+        if ($httpRequest->getStatusCode() != 200) {
             throw new InvalidResponseException(sprintf('Return response with status code: %s', $httpRequest->getStatusCode()), $httpRequest->getStatusCode());
         }
         return $this->createResponse($httpRequest->getBody());
@@ -160,6 +173,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
     }
 
     abstract protected function createResponse($data);
+
     /**
      * Get the formatted Request.
      *
@@ -167,7 +181,7 @@ abstract class AbstractRequest extends BaseAbstractRequest
      */
     public function getRequestFormatted()
     {
-        if(method_exists($this->getData(), 'toXml')) {
+        if (method_exists($this->getData(), 'toXml')) {
             return $this->getData()->toXml();
         }
         return json_encode($this->getData());
