@@ -155,11 +155,11 @@ abstract class AbstractRequest extends BaseAbstractRequest
 
     public function sendData($data)
     {
-        $httpRequest = $this->httpClient->post($this->getEndpoint(), [], $data->toXml());
-        if ($httpRequest->getStatusCode() != 200) {
+        $httpRequest = $this->httpClient->postXml($this->getEndpoint(), [], $data->toXml());
+        if ($httpRequest->getStatus() != 200) {
             throw new InvalidResponseException(sprintf('Return response with status code: %s', $httpRequest->getStatusCode()), $httpRequest->getStatusCode());
         }
-        return $this->createResponse($httpRequest->getBody());
+        return $this->createResponse($httpRequest->getResult());
     }
 
     /**

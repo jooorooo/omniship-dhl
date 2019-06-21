@@ -67,7 +67,7 @@ class AbstractResponse extends BaseAbstractResponse
     public function getResponseFormatted()
     {
         if(is_null($this->content)) {
-            $this->content = $this->data->getContents();
+            $this->content = $this->data;
         }
         return $this->content;
     }
