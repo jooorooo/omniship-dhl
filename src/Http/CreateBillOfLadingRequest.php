@@ -101,7 +101,7 @@ class CreateBillOfLadingRequest extends AbstractRequest
         $request->setShipperAccountNumber($this->getShipperAccountNumber());
         $request->setShippingPaymentType($this->getPayerType());
         $request->setBillingAccountNumber($this->getBillingAccountNumber());
-        if(($da = $this->getDeclaredAmount()) > 0) {
+        if(($da = $this->getDeclaredAmount()) > 0 && !empty($this->getDutyAccountNumber())) {
             $request->setDutyPaymentType($this->getPayerType());
             $request->setDutyAccountNumber($this->getDutyAccountNumber());
         }
